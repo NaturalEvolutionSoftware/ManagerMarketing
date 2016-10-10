@@ -1,0 +1,16 @@
+[
+    {
+        "lacero":{
+            "password" : "13579",
+            "data" : {
+                "name" : "Luis Jose",
+                "lastname" : "Acero",
+                "company"  : {
+                    "name" : "Adolfo González Ltda.",
+                    "type" : "1"
+                },
+                "role" : "superadmin"
+            }
+        }
+    }
+]

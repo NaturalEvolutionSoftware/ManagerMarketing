@@ -1,0 +1,38 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Agregar Super Administrador</h1>
+        <button class="button button-clear button-assertive" ng-click="vm.newSuperAdmin.close()">Volver</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form name="addSuperAdminForm" ng-submit="vm.submitNewSuperAdmin(addSuperAdminForm.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nombres</span>
+                    <input type="text" placeholder="Nombres" ng-model="vm.formSuperAdmin.name" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Apellidos</span>
+                    <input type="text" placeholder="Apellidos" ng-model="vm.formSuperAdmin.lastname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Usuario</span>
+                    <input type="text" placeholder="Usuario" ng-model="vm.formSuperAdmin.username" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Contraseña</span>
+                    <input type="text" placeholder="Contraseña" ng-model="vm.formSuperAdmin.password" required>
+                </label>
+                <div class="padding-left errorMessage" ng-show="vm.newSuperAdmin.submitted && !addSuperAdminForm.$valid">
+                    No puedes dejar campos vacíos
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-positive">Guardar</button>
+                </div>
+        </form>
+
+    </ion-content>
+</div>

@@ -1,0 +1,27 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Nueva Subempresa</h1>
+        <button class="button button-clear button-assertive" ng-click="vm.newCompany.close()">Volver</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form name="addCompanyForm" ng-submit="vm.submitNewCompany(addCompanyForm.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Razón Social</span>
+                    <input type="text" placeholder="Nombres" ng-model="vm.formCompany.name" required>
+                </label>
+                </div>
+                <div class="padding-left errorMessage" ng-show="vm.newCompany.submitted && !addCompanyForm.$valid">
+                    No puedes dejar campos vacíos
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-positive">Guardar</button>
+                </div>
+        </form>
+
+    </ion-content>
+</div>

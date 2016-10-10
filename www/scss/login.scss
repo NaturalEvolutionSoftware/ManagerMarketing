@@ -1,0 +1,54 @@
+
+ion-content.login{
+    padding: 50px;
+    
+    .row{
+        &.welcome-message{
+            .col{
+                text-align: center;
+                padding: 10px;
+                margin-bottom: 60px;
+                font-size: 20pt;
+                color: dimgray;
+            }
+        }
+    }
+    
+    .card{
+        max-width: 500px;
+        margin: 0 auto;
+        
+        div.login-btn-container{
+            text-align: center;
+            button{
+                margin: 10px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    
+    ion-content.login{
+        padding: 20px;
+        .row{
+            &.welcome-message{
+                .col{
+                    margin-bottom: 20px;
+                    font-size: 14pt;
+                }
+            }
+        }
+        
+        .card{
+            div.login-btn-container{
+                button{
+                    display: block;
+                    margin: 10px auto;
+                }
+            }
+        }
+    }
+    
+}

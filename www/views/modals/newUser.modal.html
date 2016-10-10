@@ -1,0 +1,52 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Nuevo Usuario</h1>
+        <button class="button button-clear button-assertive" ng-click="vm.newUser.close()">Volver</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form name="addUserForm" ng-submit="vm.submitNewUser(addUserForm.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nombres</span>
+                    <input type="text" placeholder="Nombres" ng-model="vm.formUser.name" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Apellidos</span>
+                    <input type="text" placeholder="Apellidos" ng-model="vm.formUser.lastname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Usuario</span>
+                    <input type="text" placeholder="Usuario" ng-model="vm.formUser.username" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Contraseña</span>
+                    <input type="text" placeholder="Contraseña" ng-model="vm.formUser.password" required>
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Rol
+                    </div>
+                    <select ng-model="vm.formUser.role">
+                        <option value="{{vm.constants.roles.admin}}">Administrador</option>
+                        <option value="{{vm.constants.roles.other}}">Otro</option>
+                    </select>
+                </label>
+                <label class="item item-input item-stacked-label" ng-if="vm.checkOther()">
+                    <span class="input-label">¿Cuál?</span>
+                    <input type="text" placeholder="Otro rol" ng-model="vm.formUser.other" required>
+                </label>
+                </div>
+                <div class="padding-left errorMessage" ng-show="vm.newUser.submitted && !addUserForm.$valid">
+                    No puedes dejar campos vacíos
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-positive">Guardar</button>
+                </div>
+        </form>
+
+    </ion-content>
+</div>

@@ -1,8 +1,10 @@
 <ion-view view-title="login">
-    <ion-header-bar class="bar-positive">
-        <h1 class="title">{{vm.msg.views.login.title}}</h1>
+    <ion-header-bar class="bar-balanced">
+        <h1 class="title">Iniciar Sesión</h1>
     </ion-header-bar>
     <ion-content class="login has-header">
+        
+        <div class="logo"><img src="img/logo.jpg"></div>
         
         <div class="row welcome-message">
             <div class="col">{{vm.msg.views.login.messages.welcome}}</div>
@@ -20,10 +22,10 @@
                         <input type="password" ng-model="vm.logindata.password" />
                     </label>
                     <div class="item login-btn-container">
-                        <button class="button button-positive login-btn" ng-click="vm.submitLogin()">
+                        <button class="button button-balanced login-btn" ng-click="vm.submitLogin()">
                             {{vm.msg.views.login.tags.buttons.submit}}
                         </button>
-                        <button class="button button-outline button-assertive login-btn">
+                        <button class="button button-outline button-royal login-btn">
                             {{vm.msg.views.login.tags.buttons.forgotPass}}
                         </button>          
                     </div>

@@ -14,6 +14,13 @@ ion-content.login {
       ion-content.login .card div.login-btn-container button {
         margin: 10px;
         display: inline-block; }
+  ion-content.login .logo {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px; }
+    ion-content.login .logo img {
+      width: 400px;
+      margin: 0 auto; }
 
 @media (max-width: 500px) {
   ion-content.login {
@@ -23,6 +30,8 @@ ion-content.login {
       font-size: 14pt; }
     ion-content.login .card div.login-btn-container button {
       display: block;
-      margin: 10px auto; } }
+      margin: 10px auto; }
+    ion-content.login .logo img {
+      width: 200px; } }
 
 /*# sourceMappingURL=login.css.map */

@@ -39,6 +39,13 @@ function constantService(){
              'subDistributor' : '2',
              'channel' : '3',
              'salepoint' : '4',
+         },
+         'companyTags' : {
+             'systemAdmin' : 'Administrador del sistema',
+             'distributor' : 'Distribuidor',
+             'subDistributor' : 'Subdistribuidor',
+             'channel'   : 'Canal',
+             'salepoint' : 'Punto de venta'
          }
       }
   }

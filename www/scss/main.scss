@@ -1,7 +1,20 @@
 ion-content.main{
+    
+    .logo{
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        img{
+            width: 150px;
+            margin-right: 30px;
+        }
+    }
+    
     .company-title{
-      font-size: 14pt;
-      color: #0c60ee;
+      font-size: 12pt;
+      color: #886AEA;
+      font-weight: bold;
+      background: #f5f5f5;
     }
     
     .list{

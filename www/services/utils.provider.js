@@ -5,7 +5,8 @@ function utilsService($constants){
   var constants = $constants.getConstants();
   var self= {
       'getRoleName' : returnRoleName,
-      'getSubCompanyType' : getCompanyType
+      'getSubCompanyType' : getCompanyType,
+      'getCompanyTag' : returnCompanyTag
   };
   
   function returnRoleName(userRole){
@@ -36,6 +37,33 @@ function utilsService($constants){
           
           case constants.companyTypes.channel:{
               return constants.companyTypes.salepoint;
+          }
+      }
+  }
+  
+  function returnCompanyTag(companyType){
+      
+      console.log(companyType);
+      
+      switch(companyType){
+          case constants.companyTypes.systemAdmin:{
+              return constants.companyTags.systemAdmin;
+          }
+          
+          case constants.companyTypes.distributor:{
+              return constants.companyTags.distributor;
+          }
+          
+          case constants.companyTypes.subDistributor:{
+              return constants.companyTags.subDistributor;
+          }
+          
+          case constants.companyTypes.channel:{
+              return constants.companyTags.channel;
+          }
+          
+          case constants.companyTypes.salepoint:{
+              return constants.companyTags.salepoint;
           }
       }
   }

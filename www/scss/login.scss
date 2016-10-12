@@ -26,6 +26,16 @@ ion-content.login{
             }
         }
     }
+    
+    .logo{
+        text-align: center;
+        width: 100%;
+        margin-bottom: 20px;
+        img{
+            width: 400px;
+            margin: 0 auto;
+        }
+    }
 }
 
 @media (max-width: 500px) {
@@ -49,6 +59,12 @@ ion-content.login{
                 }
             }
         }
+        
+        .logo{
+        img{
+            width: 200px;
+        }
+    }
     }
     
 }

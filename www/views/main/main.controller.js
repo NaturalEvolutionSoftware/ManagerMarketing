@@ -177,4 +177,6 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     vm.canUserSeeCompanies = function () {
        return vm.company.category !== constants.companyTypes.salepoint && vm.user.roleLvl === constants.roles.superadmin;
     }
+    
+    vm.getCompanyTag = $utils.getCompanyTag;
 }

@@ -10,7 +10,7 @@ function messagesService(){
       return {
           'views' : {
               'login' : {
-                  'title': 'Administrador de comerciantes',
+                  'title': 'Manager Marketing',
                   'tags' : {
                       'buttons': {
                           'submit': 'Iniciar Sesión',

@@ -6,17 +6,6 @@
     <title></title>
 
     <link rel="manifest" href="manifest.json">
-
-    <!-- un-comment this code to enable service worker
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('service worker installed'))
-          .catch(err => console.log('Error', err));
-      }
-    </script>-->
-
-    <link href="css/style.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -27,26 +16,18 @@
     <script src="lib/ionic/js/angular-route/angular-route.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+    <!--<script src="cordova.js"></script>-->
 
     <!-- your app's js -->
-    <script src="js/modalForm.js"></script>
     <script src="js/app.js"></script>
   </head>
   
-  <body ng-app="starter">
-
-    <div ng-view></div> 
-    <script src="views/login/login.model.js"></script>
-    <script src="views/main/main.model.js"></script>
-    <script src="services/messages.provider.js"></script>
-    <script src="services/login.provider.js"></script>
-    <script src="services/session.provider.js"></script>
-    <script src="services/company.provider.js"></script>
-    <script src="services/user.provider.js"></script>
-    <script src="services/utils.provider.js"></script>
-    <script src="services/constants.provider.js"></script>
-    <script src="views/login/login.controller.js"></script>
-    <script src="views/main/main.controller.js"></script>
+  <body ng-app="App">
+	<div data-role="content" id="appContainer">
+		<ion-nav-view></ion-nav-view>
+	</div> 
+  <script src="js/managers/navigation.manager.js"></script>
+  <script src="js/providers/constants.provider.js"></script>
+	<script src="js/controllers/login.controller.js"></script>
   </body>
 </html>

@@ -2,11 +2,6 @@ angular.module('starter').factory('$messages', messagesService);
 
 messagesService.$inject = [];
 function messagesService(){
-  var self= {
-      'getMessages' : returnMessages 
-  };
-  
-  function returnMessages(){
       return {
           'views' : {
               'login' : {
@@ -27,7 +22,4 @@ function messagesService(){
               }
           }
       }
-  }
-  
-  return self;
 };

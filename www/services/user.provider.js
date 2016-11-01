@@ -1,49 +1,44 @@
 angular.module('starter').factory('$users', userService);
 
-userService.$inject = ['$constants'];
-function userService($constants){ 
-  var constants = $constants.getConstants();  
+userService.$inject = ['$constants', '$http'];
+function userService($constants, $http){ 
   var users;
     
   var self= {
       'getUser' : getUserInfo,
       'createUser' : newUser,
-      'deleteUser' : delUser
+      'deleteUser' : delUser,
+      'editUser'   : modifyUser
   };
   
-  function init(){
-     //localStorage.clear();
-    if(!localStorage.getItem(constants.localstorage.users)){  
-     localStorage.setItem(constants.localstorage.users, JSON.stringify(constants.mocks.users));  
-    }
-    users = JSON.parse(localStorage.getItem(constants.localstorage.users));
-    console.log(users);
-  }
-  
   function getUserInfo(user){
-      var resp = users.hasOwnProperty(user) ? users[user] : null;
-      return resp;
+      var data = {'userId' : user};
+      return $http.post($constants.serverUrl + $constants.services.getUser, data);
   }
   
-  function newUser(userId, userData){
-      if(users.hasOwnProperty(userId)){
-          return false;
-      }else{
-          users[userId] =  userData;
-          localStorage.setItem(constants.localstorage.users, JSON.stringify(users));
-          return true;
-      }
+  function newUser(userData){
+      return $http.post($constants.serverUrl + $constants.services.createUser, userData);
   }
   
-  function delUser(userId){
-      if(users.hasOwnProperty(userId)){
-        delete users[userId];
-        localStorage.setItem(constants.localstorage.users, JSON.stringify(users));
-        return true;  
-      }
-      return false;
+  function delUser(user){
+      var data = {'userId' : user};
+      return $http.post($constants.serverUrl + $constants.services.deleteUser, data);
   }
   
-  init();
+  function modifyUser(userData){
+      var data = {
+          'userId'      : userData.id,
+          'name'        : userData.name,
+          'lastname'    : userData.lastname,
+          'cc'          : userData.cc,
+          'birthdate'   : userData.birthdate,
+          'username'    : userData.username,
+          'password'    : userData.password,
+          'role'        : userData.role,
+          'permission'  : userData.permission
+      };
+      return $http.post($constants.serverUrl + $constants.services.createUser, data);
+  }
+  
   return self;
 };

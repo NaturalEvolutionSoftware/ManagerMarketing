@@ -1,11 +1,11 @@
 angular.module('starter').factory('$session', sessionService);
 
-sessionService.$inject = [];
-function sessionService(){
+sessionService.$inject = ['$q', '$http', '$constants'];
+function sessionService($q, $http, $constants){
   var self= {
       'setAuthenticatedUser' : setAuthUser,
       'getUserData' : getAuthUser,
-      'isUserAuthenticated' : checkUser
+      'validateSession' : checkUser
   };
   
   var authUser = null;
@@ -19,7 +19,15 @@ function sessionService(){
   }
   
   function checkUser(){
-      return authUser !== null;
+     var deferred = $q.defer();
+     $http.post($constants.serverUrl + $constants.services.getSession, {}).then(function(response){
+         setAuthUser(response.data);
+         deferred.resolve(response);
+     },function(error){
+         console.error(error);
+         deferred.reject(error);
+     });
+     return deferred.promise;
   }
   
   return self;

@@ -12,32 +12,41 @@
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Nombres</span>
-                    <input type="text" placeholder="Nombres" ng-model="vm.formUser.name" required>
+                    <input type="text" ng-model="vm.newUser.data.name" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Apellidos</span>
-                    <input type="text" placeholder="Apellidos" ng-model="vm.formUser.lastname" required>
+                    <input type="text" ng-model="vm.newUser.data.lastname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cédula</span>
+                    <input type="text" ng-model="vm.newUser.data.cc" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Fecha de Nacimiento</span>
+                    <input type="date" ng-model="vm.newUser.data.birthdate" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Usuario</span>
-                    <input type="text" placeholder="Usuario" ng-model="vm.formUser.username" required>
+                    <input type="text" ng-model="vm.newUser.data.username" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Contraseña</span>
-                    <input type="text" placeholder="Contraseña" ng-model="vm.formUser.password" required>
+                    <input type="password" ng-model="vm.newUser.data.password" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cargo</span>
+                    <input type="text" ng-model="vm.newUser.data.role" required>
                 </label>
                 <label class="item item-input item-select">
                     <div class="input-label">
-                        Rol
+                        Permisos
                     </div>
-                    <select ng-model="vm.formUser.role">
+                    <select ng-model="vm.newUser.data.permission">
                         <option value="{{vm.constants.roles.admin}}">Administrador</option>
-                        <option value="{{vm.constants.roles.other}}">Otro</option>
+                        <option value="{{vm.constants.roles.query}}">Consulta</option>
+                        <option value="{{vm.constants.roles.basic}}">Básico</option>
                     </select>
-                </label>
-                <label class="item item-input item-stacked-label" ng-if="vm.checkOther()">
-                    <span class="input-label">¿Cuál?</span>
-                    <input type="text" placeholder="Otro rol" ng-model="vm.formUser.other" required>
                 </label>
                 </div>
                 <div class="padding-left errorMessage" ng-show="vm.newUser.submitted && !addUserForm.$valid">

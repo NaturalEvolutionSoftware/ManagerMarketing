@@ -12,27 +12,40 @@
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Nombres</span>
-                    <input type="text" placeholder="Nombres" ng-model="vm.formSuperAdmin.name" required>
+                    <input type="text" placeholder="Nombres" ng-model="vm.newSuperAdmin.data.name" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Apellidos</span>
-                    <input type="text" placeholder="Apellidos" ng-model="vm.formSuperAdmin.lastname" required>
+                    <input type="text" placeholder="Apellidos" ng-model="vm.newSuperAdmin.data.lastname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cédula</span>
+                    <input type="text" ng-model="vm.newSuperAdmin.data.cc" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Fecha de Nacimiento</span>
+                    <input type="date" ng-model="vm.newSuperAdmin.data.birthdate" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Usuario</span>
-                    <input type="text" placeholder="Usuario" ng-model="vm.formSuperAdmin.username" required>
+                    <input type="text" placeholder="Usuario" ng-model="vm.newSuperAdmin.data.username" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Contraseña</span>
-                    <input type="text" placeholder="Contraseña" ng-model="vm.formSuperAdmin.password" required>
+                    <input type="password" placeholder="Contraseña" ng-model="vm.newSuperAdmin.data.password" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cargo</span>
+                    <input type="text" ng-model="vm.newSuperAdmin.data.role" required>
                 </label>
                 <div class="padding-left errorMessage" ng-show="vm.newSuperAdmin.submitted && !addSuperAdminForm.$valid">
                     No puedes dejar campos vacíos
                 </div>
                 <div class="padding">
-                    <button type="submit" class="button button-block button-royal">Guardar</button>
+                    <button type="submit" class="button button-block button-outline button-royal">Guardar</button>
                 </div>
         </form>
 
     </ion-content>
+    
 </div>

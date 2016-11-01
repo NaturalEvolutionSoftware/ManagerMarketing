@@ -2,11 +2,6 @@ angular.module('starter').factory('$constants', constantService);
 
 constantService.$inject = [];
 function constantService(){
-  var self= {
-      'getConstants' : returnConstants
-  };
-  
-  function returnConstants(){
       return {
          'mocks' : {
              'users' :    { 'hsanchez':{'password' : '13579','data' : {'id': 'hsanchez', 'name' : 'Harry Alexis','lastname' : 'Sanchez Norato', 'company' : '1','role' : 'ADMINISTRADOR', 'roleLvl' : '0'}}},
@@ -20,7 +15,7 @@ function constantService(){
              'superadmin' : '0',
              'admin'      : '1',
              'query'      : '2',
-             'other'      : '3'
+             'basic'      : '3'
          },
          'roleTags' : {
            'superadmin' : 'ADMINISTRADOR',
@@ -46,9 +41,26 @@ function constantService(){
              'subDistributor' : 'Subdistribuidor',
              'channel'   : 'Canal',
              'salepoint' : 'Punto de venta'
+         },
+         'serverUrl' : 'webservices/',
+         'services'  : {
+             'login'           : 'login.php',
+             'logout'          : 'logout.php',
+             'getSession'      : 'getSession.php',
+             'createUser'      : 'createUser.php',
+             'editUser'        : 'editUser.php',
+             'deleteUser'      : 'deleteUser.php',
+             'createCompany'   : 'createCompany.php',
+             'editCompany'     : 'editCompany.php',
+             'deleteCompany'   : 'deleteCompany.php',
+             'getCompany'      : 'getCompany.php',
+             'getCompanyUsers' : 'getCompanyUsers.php',
+             'getSubCompanies' : 'getSubCompanies.php',
+             'getSuperAdmin'   : 'getSuperAdmin.php'
+         },
+         'popups' : {
+             'confirmUserDelete' : { 'title': 'Eliminar Usuario', 'template': 'Desea eliminar?'},
+             'confirmCompanyDelete' : { 'title': 'Eliminar Empresa', 'template': 'Desea eliminar?'}
          }
       }
-  }
-  
-  return self;
 };

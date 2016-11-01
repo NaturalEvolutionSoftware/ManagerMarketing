@@ -1,8 +1,8 @@
 <ion-view>
 <ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
     <div class="h1 title">Bienvenido {{vm.user.name}}</div>
-    <button class="button button-icon icon ion-person-add" ng-click="vm.newUser.open()" ng-show="vm.canUserSeeUsers()"></button>
-    <button class="button button-icon icon ion-ios-briefcase" ng-click="vm.newCompany.open()" ng-show="vm.canUserSeeCompanies()"></button> 
+    <button class="button button-icon icon ion-person-add" ng-click="vm.newUserInit()" ng-show="vm.canUserSeeUsers()"></button>
+    <button class="button button-icon icon ion-ios-briefcase" ng-click="vm.newCompanyInit()" ng-show="vm.canUserSeeCompanies()"></button> 
 </ion-header-bar>
 <ion-content class="main has-header">
     <div class="logo"><img src="img/logo.jpg"><img src="img/logo_nes.jpg"></div>
@@ -21,18 +21,18 @@
                         <button class="button button-small button-clear button-balanced">
                             <i class="icon icon ion-edit"></i>
                         </button>-->
-                        <button class="button button-small button-clear button-assertive" ng-click="vm.deleteUser(user.id)">
+                        <button class="button button-small button-clear button-assertive" ng-click="vm.deleteUser(user)" ng-show="vm.userCanDelete(user.permission)">
                             <i class="icon icon ion-close"></i>
                         </button>
                     </div>
             </div>
             <div class="item item-divider" ng-show="vm.company.users.length === 0 && vm.canUserSeeUsers()">No hay usuarios para mostrar</div>
-            <div class="item company-title" ng-show="vm.canUserSeeCompanies()">Subempresas de {{vm.company.name}}</div>
+        <div class="item company-title" ng-show="vm.canUserSeeCompanies()">Subempresas de {{vm.company.name}}</div>
             <div ng-repeat="company in vm.subcompanies track by $index" ng-show="vm.canUserSeeCompanies()">
                 <div class="item item-button-right">
                         {{company.name}} 
                         <div class="buttons" ng-show="vm.user.id !== user.id">
-                            <button class="button button-small button-clear button-balanced" ng-click="vm.openSuperAdmin(company.id)" ng-show="vm.getSuperAdminName(company.id).length === 0">
+                            <button class="button button-small button-clear button-balanced" ng-click="vm.newSuperAdminInit(company.id)" ng-hide="vm.checkSuperAdmin(company)">
                                 <i class="icon icon ion-person-add"></i>
                             </button>
                             <!-- SE GUARDA PARA LA VERSIÓN BETA
@@ -44,9 +44,12 @@
                             </button>
                         </div>
                 </div>
-                <div class="item" ng-show="vm.getSuperAdminName(company.id).length > 0"> Administrador: {{vm.getSuperAdminName(company.id)}}</div>
+                <div class="item" ng-show="vm.checkSuperAdmin(company)"> Administrador: {{company.superadmin.name + ' ' + company.superadmin.lastname}}</div>
             </div>
             <div class="item" ng-show="vm.subcompanies.length === 0 && vm.canUserSeeCompanies()">No hay empresas para mostrar</div>
      </div>
 </ion-content>
+<ion-footer-bar class="bar-positive">
+    <div class="h1 title" ng-click="vm.logout()">Cerrar Sesión</div>
+</ion-footer-bar>
 </ion-view>

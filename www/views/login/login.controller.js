@@ -7,7 +7,7 @@ angular.module('starter.login')
 loginController.$inject = ['$messages', '$login', '$location'];
 function loginController($messages, $login, $location) {
     var vm = this;
-	vm.msg = $messages.getMessages();
+	vm.msg = $messages;
     vm.logindata = {
         'username' : '',
         'password' : ''
@@ -17,18 +17,16 @@ function loginController($messages, $login, $location) {
         $login.checkLogin(vm.logindata).then(submitLoginSuccess, submitLoginFailure);
     }
     
-    function submitLoginSuccess(data){
-         $location.url('/main');
+    function submitLoginSuccess(response){
+        if(Object.keys(response.data).length > 0){         
+            $location.url('/main');
+        }else{
+            alert('nombre de usuario o contraseña incorrectos')
+        }
     }
     
     function submitLoginFailure(error){
-        if(error.hasOwnProperty('myStatus')){
-            if(error.myStatus === 'notFound'){
-                alert('Datos de usuario o contraseña erroneos');
-            }
-        }
-        else{
-            alert('Existen inconvenientes en este momento. Inténtelo de nuevo mas tarde');
-        }
+        alert('existen problemas de conexión con el servidor');
+        console.error(error);
     }
 }

@@ -4,179 +4,292 @@ angular.module('starter.main')
 
 .controller('mainCtrl', mainController);
 
-mainController.$inject = ['$messages', '$session','$location', '$company','$scope', '$ionicModal', '$constants', '$utils', '$users'];
-function mainController($messages, $session, $location, $company, $scope, $ionicModal, $constants, $utils, $users) {
+mainController.$inject = ['$messages', '$session','$location', '$company','$scope', '$ionicModal', '$constants', '$utils', '$users', '$ionicLoading', '$ionicPopup', '$login'];
+function mainController($messages, $session, $location, $company, $scope, $ionicModal, $constants, $utils, $users, $ionicLoading, $ionicPopup, $login) {
     var vm = this;
-	vm.msg = $messages.getMessages();
+    vm.constants = $constants;
+	vm.msg = $messages;
     vm.user = {};
     vm.company = {};
     vm.companyUsers = {};
     vm.subcompanies = {};
     vm.curSubcompany = null;
-    var x = true;
-    var constants = $constants.getConstants();
-    vm.constants = constants;
-    vm.newUser = new modalForm($ionicModal, $scope, constants.routes.modals.newUser);
-    vm.newCompany = new modalForm($ionicModal, $scope, constants.routes.modals.newCompany);
-    vm.newSuperAdmin = new modalForm($ionicModal, $scope, constants.routes.modals.newSuperAdmin);
-    vm.formUser = {};
-    vm.formCompany = {};
-    vm.formSuperAdmin = {};
+    
+    vm.newUser = new modalForm($ionicModal, $scope, $constants.routes.modals.newUser);
+    vm.newCompany = new modalForm($ionicModal, $scope, $constants.routes.modals.newCompany);
+    vm.newSuperAdmin = new modalForm($ionicModal, $scope, $constants.routes.modals.newSuperAdmin);
     
     vm.checkUser = function(){
-        if($session.isUserAuthenticated()){
+        $ionicLoading.show();
+        $session.validateSession().then(sessionValidateSucceed, sessionValidateFailed);
+    };
+    
+    vm.checkSuperAdmin = function(company){
+        return company.superadmin && Object.keys(company.superadmin).length > 0;
+    }
+    
+    vm.logout = function(){
+        $login.logout().then(function(response){
+            $location.url('/login')
+        }, function(error){
+            console.error(error);
+            $location.url('/login');
+        });
+    }
+    
+    vm.submitNewUser = function(valid){
+        vm.newUser.submitted = true;
+        if (!valid) {return;}
+        var data = vm.newUser.data;
+        var userData = {
+            'name'        : data.name,
+            'lastname'    : data.lastname,
+            'cc'          : data.cc,
+            'birthdate'   : data.birthdate,
+            'username'    : data.username,
+            'password'    : data.password,
+            'role'        : data.role,
+            'permission'  : data.permission,
+            'companyId'   : vm.company.id
+        };
+        
+        $users.createUser(userData).then(createUserSucceed, createUserFailed);
+    }
+    
+    vm.submitNewCompany = function(valid){
+        vm.newCompany.submitted = true;
+        if (!valid){return;}
+        var data = vm.newCompany.data;
+        
+        var companyData = {
+            'parentCompany' : vm.company.id,
+            'name' : data.name,
+            'nit'  : data.nit,
+            'category' : $utils.getSubCompanyType(vm.company.category)
+        }
+        
+        $company.createCompany(companyData).then(createCompanySucceed, createCompanyFailed);
+    }
+    
+    vm.submitNewSuperAdmin = function(valid){
+        vm.newSuperAdmin.submitted = true;
+        if (!valid){return;}
+        var data = vm.newSuperAdmin.data;
+        
+        var userData = {
+            'name'        : data.name,
+            'lastname'    : data.lastname,
+            'cc'          : data.cc,
+            'birthdate'   : data.birthdate,
+            'username'    : data.username,
+            'password'    : data.password,
+            'role'        : data.role,
+            'permission'  : data.permission,
+            'companyId'   : vm.curSubcompany
+        }
+        
+        $users.createUser(userData).then(createSuperAdminSucceed, createSuperAdminFailed);
+    }
+    
+    vm.deleteUser = function(user){
+        var confirmPopup = $ionicPopup.confirm($constants.popups.confirmUserDelete);
+        confirmPopup.then(function(res) {
+            if(res) {
+                $users.deleteUser(user.id).then(deleteUserSucceed, deleteUserFailed);
+            }
+        });
+    }
+    
+     vm.deleteCompany = function(companyId){
+        var confirmPopup = $ionicPopup.confirm($constants.popups.confirmCompanyDelete);
+        
+        confirmPopup.then(function(res) {
+            if(res) {
+                $company.deleteCompany(companyId).then(deleteCompanySucceed, deleteCompanyFailed);
+            }
+        });
+    }
+    
+    vm.canUserSeeUsers = function () {
+        return vm.user.permission === $constants.roles.superadmin || vm.user.permission === $constants.roles.admin;
+    }
+    
+    vm.canUserSeeCompanies = function () {
+       return vm.company.category !== $constants.companyTypes.salepoint && vm.user.permission === $constants.roles.superadmin;
+    }
+    
+    vm.userCanDelete = function(permission){
+        return parseInt(vm.user.permission) <= parseInt(permission);
+    }
+    
+    vm.newUserInit = function(){
+        vm.newUser.data = {};
+        vm.newUser.data.permission = $constants.roles.basic;
+        vm.newUser.open();
+    }
+    
+    vm.newSuperAdminInit = function(subcompanyId){
+        vm.curSubcompany = subcompanyId;
+        vm.newSuperAdmin.data = {};
+        vm.newSuperAdmin.open();
+    }
+    
+    vm.newCompanyInit = function(){
+        vm.newCompany.data = {};
+        vm.newCompany.open();
+    }
+    
+    vm.getCompanyTag = $utils.getCompanyTag;
+    
+    function updateCompany(){
+        $ionicLoading.show();
+        $company.getCompany(vm.user.companyId).then(updateCompanySucceed, updateCompanyFailed);
+    }
+      
+    function updateCompanyUsers(){
+        $ionicLoading.show();
+        $company.getUsers(vm.user.companyId).then(updateCompanyUsersSucceed, updateCompanyUsersFailed);
+    }
+    
+    function updateSubCompanies(){
+        $ionicLoading.show();
+        $company.getSubCompanies(vm.user.companyId).then(updateSubCompaniesSucceed, updateSubCompaniesFailed);
+    }
+    
+    function updateSuperAdmins(){
+        vm.subcompanies.forEach(function(company) {
+            $ionicLoading.show();
+            $company.getSuperAdmin(company.id).then(function(response) {
+                company.superadmin = response.data;
+                $ionicLoading.hide();
+            }, function(error){
+                console.error(error);
+                $ionicLoading.hide();
+            })
+        }, this);
+    }
+    
+    function sessionValidateSucceed(response){
+        $ionicLoading.hide();
+        if(Object.keys(response.data).length > 0){
             vm.user = $session.getUserData();
-            //vm.user = constants.mocks.users.lacero.data;
-            vm.company = $company.getCompany(vm.user.company);
-            vm.companyUsers = $company.getUsers(vm.user.company);
-            vm.subcompanies = $company.getSubCompanies(vm.user.company);
+            updateCompany();
+            updateCompanyUsers();
+            updateSubCompanies();
         }else{
             alert('no hay ninguna sesión de usuario activa');
             $location.url('/login');
         }
-    };
+    }
     
-    vm.submitNewUser = function(valid){
-        
-        /*validate contents*/
-        var role, roleLvl; 
-        vm.newUser.submitted = true;
-        
-        if (!valid)
-        {
-           return;
+    function sessionValidateFailed(error){
+        $ionicLoading.hide();
+        alert('no se puede validar sesión contra el servidor');
+        $location.url('/login');
+    }
+    
+    function updateCompanySucceed(response){
+        $ionicLoading.hide();
+        vm.company = response.data;
+    }
+    
+    function updateCompanyFailed(error){
+        $ionicLoading.hide();
+        console.error(error);
+    }
+    
+    function updateSubCompaniesSucceed(response){
+        $ionicLoading.hide();
+        vm.subcompanies = response.data;
+        if(vm.subcompanies.length > 0){
+            updateSuperAdmins();
         }
-        
-        if(vm.formUser.other){
-            role = vm.formUser.other;
-            roleLvl = constants.roles.other;
-        }else{
-            role = $utils.getRoleName(vm.formUser.role);
-            roleLvl = constants.roles.admin;
-        }
-        
-        var userData = {
-            'password' : vm.formUser.password,
-            'data' : {
-                'id' : vm.formUser.username,
-                'name' : vm.formUser.name,
-                'lastname' : vm.formUser.lastname,
-                'company' : vm.user.company,
-                'role' : role,
-                'roleLvl' : roleLvl
-            }
-        }
-        
-        if($company.addUserToCompany(vm.user.company, userData)){
+    }
+    
+    function updateSubCompaniesFailed(error){
+        $ionicLoading.hide();
+        console.error(error);
+    }
+    
+    function updateCompanyUsersSucceed(response){
+        $ionicLoading.hide();
+        vm.companyUsers = response.data;
+        updateSubCompanies(); 
+    }
+    
+    function updateCompanyUsersFailed(error){
+        $ionicLoading.hide();
+        console.error(error);
+    }
+    
+    function createUserSucceed(response){
+        $ionicLoading.hide();
+        if(response.data.status){
             vm.newUser.close();
-            vm.formUser = {};
-            vm.companyUsers = $company.getUsers(vm.user.company);
+            updateCompanyUsers();   
         }else{
-            alert('error en la creación de usuario');
+            console.error('ocurrió un error con la base de datos: '+ response.data);
         }
     }
     
-    vm.submitNewCompany = function(valid){
-        
-        /*validate contents*/
-        var role, roleLvl; 
-        vm.newCompany.submitted = true;
-        
-        if (!valid)
-        {
-           return;
-        }
-       
-       console.log($utils.getSubCompanyType(vm.company.category));
-        
-        var companyData = {
-            'name' : vm.formCompany.name,
-            'category' : $utils.getSubCompanyType(vm.company.category),
-            'subcompanies' : [],
-            'users' : []
-        }
-        
-        if($company.addSubCompany(vm.user.company, companyData)){
+    function createUserFailed(error) {
+        $ionicLoading.hide();
+        alert('fallo en la creación de usuarios');
+        console.error(error);
+    }
+    
+    function createCompanySucceed(response){
+        $ionicLoading.hide();
+        if(response.data.status){
             vm.newCompany.close();
-            vm.formCompany = {};
-            vm.subcompanies = $company.getSubCompanies(vm.user.company);
+            updateSubCompanies();  
         }else{
-            alert('error en la creación de subempresa');
+            console.error('ocurrió un error con la base de datos: '+ response.data);
         }
     }
+        
+    function createCompanyFailed(error) {
+        $ionicLoading.hide();
+        alert('fallo en la creación de subempresa');
+        console.error(error);
+    }
     
-        vm.submitNewSuperAdmin = function(valid){
-        
-        /*validate contents*/
-        var role, roleLvl; 
-        vm.newSuperAdmin.submitted = true;
-        
-        if (!valid)
-        {
-           return;
-        }
-        
-        var userData = {
-            'password' : vm.formSuperAdmin.password,
-            'data' : {
-                'id' : vm.formSuperAdmin.username,
-                'name' : vm.formSuperAdmin.name,
-                'lastname' : vm.formSuperAdmin.lastname,
-                'company' : vm.curSubcompany,
-                'role' : constants.roleTags.superadmin,
-                'roleLvl' : constants.roles.superadmin
-            }
-        }
-        
-        if($company.addUserToCompany(vm.curSubcompany, userData)){
+    function createSuperAdminSucceed(response) {
+        $ionicLoading.hide();
+        if(response.data.status){
             vm.newSuperAdmin.close();
-            vm.formSuperAdmin = {};
-            vm.companyUsers = $company.getUsers(vm.user.company);
+            updateSuperAdmins();
         }else{
-            alert('error en la creación de usuario');
+            console.error('ocurrió un error con la base de datos: '+ response.data);
         }
     }
     
-    vm.checkOther = function() {
-        return vm.formUser.role === constants.roles.other;
-    };
-    
-    vm.deleteUser = function(userId){
-        if($company.removeUserFromCompany(vm.user.company, userId)){
-            vm.companyUsers = $company.getUsers(vm.user.company);
-        }else{
-            alert('error en la eliminación de usuario');
-        }
+    function createSuperAdminFailed(response) {
+        $ionicLoading.hide();
+        alert('fallo en la asignación de administrador');
+        console.error(error);
     }
     
-    vm.deleteCompany = function(companyId){
-        if($company.removeSubCompany(vm.user.company, companyId)){
-            vm.subcompanies = $company.getSubCompanies(vm.user.company);
-        }else{
-            alert('error en la eliminación de empresa');
-        }
+    function deleteUserSucceed(response) {
+        $ionicLoading.hide();
+        updateCompanyUsers();
     }
     
-    vm.getSuperAdminName = function(companyId){
-        var user = $company.getSuperAdmin(companyId);
-        if(user.name && user.lastname){
-            return user.name + ' ' + user.lastname;
-        }
-        return '';
+    function deleteUserFailed(error){
+        $ionicLoading.hide();
+        alert('fallo en la eliminación de usuario');
+        console.error(error);
     }
     
-    vm.openSuperAdmin = function(subcompanyId){
-        vm.curSubcompany = subcompanyId;
-        vm.newSuperAdmin.open();
+    function deleteCompanySucceed(response) {
+        $ionicLoading.hide();
+        updateSubCompanies();
     }
     
-    vm.canUserSeeUsers = function () {
-        return vm.user.roleLvl === constants.roles.superadmin || vm.user.roleLvl === constants.roles.admin;
+    function deleteCompanyFailed(error){
+        $ionicLoading.hide();
+        alert('fallo en la eliminación de empresa');
+        console.error(error);
     }
-    
-    vm.canUserSeeCompanies = function () {
-       return vm.company.category !== constants.companyTypes.salepoint && vm.user.roleLvl === constants.roles.superadmin;
-    }
-    
-    vm.getCompanyTag = $utils.getCompanyTag;
+
 }

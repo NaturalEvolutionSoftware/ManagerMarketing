@@ -1,27 +1,34 @@
 angular.module('starter').factory('$login', loginService);
 
-loginService.$inject = ['$q', '$http', '$session', '$users'];
-function loginService($q, $http, $session, $users){
+loginService.$inject = ['$q', '$http', '$session', '$users', '$constants'];
+function loginService($q, $http, $session, $users, $constants){
   var self= {
-      'checkLogin' : submitLogin 
+      'checkLogin' : submitLogin,
+      'logout'     : logOut
   };
   
   function submitLogin(loginData){
       var deferred = $q.defer();
-      
-      setTimeout(function(){
-          var user = $users.getUser(loginData.username);
-          
-          if(user !== null && user.password === loginData.password){
-              $session.setAuthenticatedUser(user.data);
-              deferred.resolve({});
-          }else{
-              deferred.reject({'myStatus' : 'notFound'});
-          }
-          
-      }, 500);
+       
+       var data = {
+           'username' : loginData.username,
+           'password' : loginData.password
+       }
+
+       $http.post($constants.serverUrl + $constants.services.login, data).then(function(response){
+           if(Object.keys(response.data).length > 0){
+               $session.setAuthenticatedUser(response.data);
+           }
+           deferred.resolve(response);
+       }, function(error){
+           deferred.reject(error);
+       });
        
        return deferred.promise;
+  }
+  
+  function logOut(){
+     return $http.post($constants.serverUrl + $constants.services.logout, {});
   }
   
   return self;

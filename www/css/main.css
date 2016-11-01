@@ -7,10 +7,13 @@ ion-content.main .logo {
     margin-right: 30px; }
 ion-content.main .company-title {
   font-size: 12pt;
-  color: #886AEA;
+  color: #006693;
   font-weight: bold;
   background: #f5f5f5; }
 ion-content.main .list {
   margin-bottom: 0px; }
+
+ion-footer-bar div:hover {
+  cursor: pointer; }
 
 /*# sourceMappingURL=main.css.map */

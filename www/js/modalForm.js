@@ -5,6 +5,7 @@ function modalForm($ionicModal, $scope, url) {
     var that = this;
     this.open = openM;
     this.close = closeM;
+    this.data = {};
 
     $ionicModal.fromTemplateUrl(url, function (modal) {
         that.modal = modal;

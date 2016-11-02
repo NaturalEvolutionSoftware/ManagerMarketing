@@ -20,13 +20,19 @@ function sessionService($q, $http, $constants){
   
   function checkUser(){
      var deferred = $q.defer();
-     $http.post($constants.serverUrl + $constants.services.getSession, {}).then(function(response){
-         setAuthUser(response.data);
-         deferred.resolve(response);
-     },function(error){
-         console.error(error);
-         deferred.reject(error);
-     });
+     if(authUser!==null){
+         deferred.resolve(true);
+     }else{
+        $http.post($constants.serverUrl + $constants.services.getSession, {}).then(function(response){
+            if(Object.keys(response.data).length>0){
+              setAuthUser(response.data);
+            }
+            deferred.resolve(true);
+        },function(error){
+            console.error(error);
+            deferred.reject(error);
+        });
+    }
      return deferred.promise;
   }
   

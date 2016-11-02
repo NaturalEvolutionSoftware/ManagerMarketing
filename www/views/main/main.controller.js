@@ -171,7 +171,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function sessionValidateSucceed(response){
         $ionicLoading.hide();
-        if(Object.keys(response.data).length > 0){
+        if($session.getUserData() !== null){
             vm.user = $session.getUserData();
             updateCompany();
             updateCompanyUsers();

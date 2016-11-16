@@ -1,0 +1,66 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary bar-balanced">
+        <h1 ng-hide="vm.newUser.isEdit" class="title">Nuevo Usuario</h1>
+        <h1 ng-show="vm.newUser.isEdit" class="title">Editar Usuario</h1>
+        <button class="button button-clear button-light" ng-click="vm.newUser.close()">Volver</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <form name="addUserForm" ng-submit="vm.submitNewUser(addUserForm.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nombres</span>
+                    <input type="text" ng-model="vm.newUser.data.name" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Apellidos</span>
+                    <input type="text" ng-model="vm.newUser.data.lastname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cédula</span>
+                    <input type="number" ng-model="vm.newUser.data.cc" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Fecha de Nacimiento</span>
+                    <input type="date" ng-model="vm.newUser.data.birthdate" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Usuario</span>
+                    <input type="text" ng-model="vm.newUser.data.username" required>
+                </label>
+                <label class="item item-input item-stacked-label" ng-if="!vm.newUser.isEdit">
+                    <span class="input-label">Contraseña</span>
+                    <input type="password" ng-model="vm.newUser.data.password" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Correo Electrónico</span>
+                    <input type="text" ng-model="vm.newUser.data.mail" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cargo</span>
+                    <input type="text" ng-model="vm.newUser.data.role" required>
+                </label>
+                <label class="item item-input item-select" ng-if="!vm.newUser.isEdit">
+                    <div class="input-label">
+                        Permisos
+                    </div>
+                    <select ng-model="vm.newUser.data.permission">
+                        <option value="{{vm.constants.roles.admin}}">Administrador</option>
+                        <option value="{{vm.constants.roles.query}}">Consulta</option>
+                        <option value="{{vm.constants.roles.basic}}">Básico</option>
+                    </select>
+                </label>
+                </div>
+                <div class="padding-left errorMessage" ng-show="vm.newUser.submitted && !addUserForm.$valid">
+                    No puedes dejar campos vacíos
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-outline button-royal">Guardar</button>
+                </div>
+        </form>
+
+    </ion-content>
+</div>

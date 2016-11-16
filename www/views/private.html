@@ -1,27 +1,40 @@
 <ion-side-menus>
-  <ion-side-menu-content>
+  <ion-side-menu-content ng-controller="privateController as vm">
     <ion-nav-view name="private" animation="slide-left-right"></ion-nav-view>
   </ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">Left</h1>
+  <ion-side-menu side="left" ng-controller="sideMenuController as vm">
+    <header class="bar bar-header">
+      <div><h2>Menú Principal<h2></div>
     </header>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Login
+        <ion-item>
+          <h2>{{vm.user.name}} {{vm.user.lastname}}</h2>
+          <h2>{{vm.user.role}}</h2>
+          <p>{{vm.user.mail}}</p>
+          <p>{{vm.company.name }}</p>
+          <p>{{vm.getCompanyTag(vm.company.category)}}</p>
         </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.data)">
+          Mis Datos<i class="icon ion-ios-list-outline"></i>
         </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.users)">
+          Usuarios <i class="icon ion-person"></i>
         </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.main)">
+          Empresas <i class="icon ion-ios-briefcase"></i>
+        </ion-item>
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.contact)">
+          Contacto <i class="icon ion-ios-telephone"></i>
+        </ion-item>
+        <ion-item class="item-icon-right" menu-close ng-click="vm.logout()">
+          Cerrar Sesión<i class="icon ion-android-exit"></i>
         </ion-item>
       </ion-list>
+      
+      <!--<img src="images/logo_nes.jpg" />-->
     </ion-content>
   </ion-side-menu>
+  
 </ion-side-menus>

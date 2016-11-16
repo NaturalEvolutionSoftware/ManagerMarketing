@@ -1,0 +1,17 @@
+ion-side-menu header.bar {
+  padding: 0px; }
+  ion-side-menu header.bar div {
+    width: 100%;
+    padding: 10px;
+    background: #006791; }
+    ion-side-menu header.bar div h2 {
+      font-size: 12pt;
+      color: white; }
+ion-side-menu ion-content {
+  background: lightgray; }
+  ion-side-menu ion-content ion-list ion-item h2, ion-side-menu ion-content ion-list ion-item p {
+    margin-bottom: 5px; }
+  ion-side-menu ion-content ion-list ion-item i {
+    color: #006791; }
+
+/*# sourceMappingURL=sidemenu.css.map */

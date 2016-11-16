@@ -1,0 +1,32 @@
+<ion-view ng-controller="contactCtrl as vm">
+<ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
+    <button class="button button-icon icon ion-navicon-round" ng-click="vm.toggleMenu()"></button> 
+    <div class="h1 title">Contacto</div>
+</ion-header-bar>
+<ion-content class="main has-header">
+    <div class="contact-intro">Tu opinión es lo mas importante, envía tus sugerencias, agradecimientos y oportunidades de mejora a través de este formulario.</div>
+    <form name="addMessageForm" ng-submit="vm.submitMessage(addMessageForm.$valid)" novalidate>
+        <div class="card contact">
+        <div class="list">
+            <label class="item item-input item-select">
+            <div class="input-label">
+               Motivo
+            </div>
+            <select ng-model="vm.contactData.motive" required  ng-options="item as item.label for item in vm.contactOptions track by item.id"></select>
+        </label>
+        
+        <label class="item item-input item-floating-label">
+            <span class="input-label">Mensaje</span>
+            <textarea ng-model="vm.contactData.message" placeholder="Mensaje" required></textarea>
+        </label>
+        
+        <div class="item padding-left errorMessage" ng-show="vm.contactData.submitted && !addMessageForm.$valid">
+            No puedes dejar campos vacíos
+        </div>
+        
+        <div class="save-btn-container"><button type="submit" class="button button-royal">Enviar</button></div>
+        </div>
+        </div>
+    </form>
+</ion-content>
+</ion-view>

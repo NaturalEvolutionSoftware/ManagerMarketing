@@ -1,91 +1,70 @@
-$facebook : #3b5998;
 
-ion-view.login{
+ion-content.login{
+    padding: 50px;
     
-    ion-content{
-        padding-top: 30px; 
-        background: #886AFF;
-
-        .welcome{
-            width: 100%;
-            text-align: center;
-            .logo{
-                margin-bottom: 25px; 
-                img{
-                    width: 180px;
-                }
-            }
-
-            .message{
-                font-size: 12pt;
-                color: white;
-                font-weight: bold;
-                margin-bottom: 30px; 
+    .row{
+        &.welcome-message{
+            .col{
+                text-align: center;
+                padding: 10px;
+                margin-bottom: 60px;
+                font-size: 20pt;
+                color: dimgray;
             }
         }
+    }
+    
+    .card{
+        max-width: 500px;
+        margin: 0 auto;
+        
+        div.login-btn-container{
+            text-align: center;
+            button{
+                margin: 10px;
+                display: inline-block;
+            }
+        }
+    }
+    
+    .logo{
+        text-align: center;
+        width: 100%;
+        margin-bottom: 20px;
+        img{
+            width: 400px;
+            margin: 0 auto;
+        }
+    }
+}
 
-        .card.login-data{
-            //top, right, bottom. left
-            margin: 0px 40px 30px 40px;
-            border-radius: 25px;
-
-            .loginform{
-                .buttonset{
-                    width: 100%;
-                    text-align: center;
-                    a{
-                        margin-top: 20px;
-                        padding: 5px 10px 5px 10px;
-                        font-size: 12pt;
-                        background-color: #483887; 
-                    }
+@media (max-width: 500px) {
+    
+    ion-content.login{
+        padding: 20px;
+        .row{
+            &.welcome-message{
+                .col{
+                    margin-bottom: 20px;
+                    font-size: 14pt;
                 }
             }
         }
         
-        .noaccount{
-            width: 100%;
-            text-align: center;
-            font-size: 14pt;
-            color: white;
-        }
-        
-        .fblogin{
-            
-            $margin-sides: 45px;
-            
-            width: -moz-calc(100% - $margin-sides * 2);
-            width: -webkit-calc(100% - $margin-sides * 2);
-            width: -o-calc(100% - $margin-sides * 2);
-            width: calc(100% - $margin-sides * 2);
-            
-            text-align: center;
-            margin: 40px $margin-sides 0px $margin-sides; 
-            
-            border-radius: 25px;
-            border: 0.5px solid white;
-            background: $facebook;
-            
-            a{
-                &.button.button-clear{
-                    color: white;
-                    span.message{
-                        color: white;
-                        font-size: 10pt;
-                        font-weight: bold;
-                        margin-left: 10px; 
-                    }
+        .card{
+            div.login-btn-container{
+                button{
+                    display: block;
+                    margin: 10px auto;
                 }
             }
         }
-    }
-
-    .tabs{
-        .tab-item{
-            opacity: 1;
-        }
-        a{
-            font-weight: bold;
+        
+        .logo{
+        img{
+            width: 200px;
         }
     }
+    }
+    
 }

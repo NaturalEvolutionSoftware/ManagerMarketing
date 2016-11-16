@@ -1,0 +1,24 @@
+<ion-view ng-controller="dataCtrl as vm">
+<ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
+    <button class="button button-icon icon ion-navicon-round" ng-click="vm.toggleMenu()"></button> 
+    <div class="h1 title">Mis datos</div>
+    <button class="button button-icon button-small icon ion-edit" ng-click="vm.openEditUserModal()"></button> 
+</ion-header-bar>
+<ion-content class="main has-header">
+    <div class="list">
+        <div class="item item-divider">Nombre</div>
+        <div class="item item">{{vm.user.name}} {{vm.user.lastname}}</div>
+        <div class="item item-divider">Usuario</div>
+        <div class="item item">{{vm.user.username}}</div>
+        <div class="item item-divider">Correo Electrónico</div>
+        <div class="item item">{{vm.user.mail}}</div>
+        <div class="item item-divider">Cargo</div>
+        <div class="item item">{{vm.user.role}}</div>
+        <div class="item item-divider">Cédula</div>
+        <div class="item item">{{vm.user.cc}}</div>
+        <div class="item item-divider">Fecha de Nacimiento</div>
+        <div class="item item">{{vm.user.birthdate}}</div>
+        <div class="password-btn"><button class="button button-positive icon-left ion-locked" ng-click="vm.openNewPass()">Cambiar Contraseña</button></div>
+     </div>
+</ion-content>
+</ion-view>

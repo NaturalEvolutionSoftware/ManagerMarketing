@@ -1,0 +1,22 @@
+ion-content{
+    .save-btn-container{
+      width: 100%;
+      text-align: center;  
+      margin-top: 20px; 
+    }
+    
+    .contact-intro{
+        text-align: center;
+        padding: 20px;
+        font-size: 15pt;
+        color: dimgray;
+        margin-top: 50px;
+        margin-bottom: 50px; 
+    }
+    
+    .card.contact{
+        max-width: 600px;
+        padding: 10px;
+        margin: 0 auto;
+    }
+}

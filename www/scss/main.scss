@@ -1,0 +1,39 @@
+ion-content.main{
+    
+    .logo{
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        img{
+            width: 150px;
+            margin-right: 30px;
+        }
+    }
+    
+    .company-title{
+      font-size: 12pt;
+      color: #006693;
+      font-weight: bold;
+      background: #f5f5f5;
+    }
+    
+    .list{
+        margin-bottom: 0px;
+    }
+    
+    .item-divider{
+        min-height: 50px;
+        span{
+            margin-top: 7px;
+            display: block; 
+        }
+    }
+}
+
+ion-footer-bar{
+    div{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}

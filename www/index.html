@@ -8,17 +8,21 @@
     <link rel="manifest" href="manifest.json">
     <link href="css/login.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/sidemenu.css" rel="stylesheet">
+    <link href="css/contact.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/data.css" rel="stylesheet">
     <link href="css/ionic.app.css" rel="stylesheet">
-
-
+    
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="lib/ionic/js/angular-route/angular-route.min.js"></script>
-
+    
     <!-- cordova script (this will be a 404 during development) -->
     <!--<script src="cordova.js"></script>-->
 
     <!-- your app's js -->
+    <script src="js/modalForm.js"></script>
     <script src="js/app.js"></script>
   </head>
   
@@ -28,6 +32,21 @@
 	</div> 
   <script src="js/managers/navigation.manager.js"></script>
   <script src="js/providers/constants.provider.js"></script>
-	<script src="js/controllers/login.controller.js"></script>
+  <script src="js/providers/company.provider.js"></script>
+  <script src="js/providers/login.provider.js"></script>
+  <script src="js/providers/messages.provider.js"></script>
+  <script src="js/providers/session.provider.js"></script>
+  <script src="js/providers/user.provider.js"></script>
+  <script src="js/providers/utils.provider.js"></script>
+  <script src="js/providers/contact.provider.js"></script>
+  <script src="js/providers/forgot.provider.js"></script>
+  <script src="js/controllers/private.controller.js"></script>
+  <script src="js/controllers/login.controller.js"></script>
+  <script src="js/controllers/main.controller.js"></script>
+  <script src="js/controllers/sidemenu.controller.js"></script>
+  <script src="js/controllers/users.controller.js"></script>
+  <script src="js/controllers/data.controller.js"></script>
+  <script src="js/controllers/contact.controller.js"></script>
+  <script src="js/controllers/forgot.controller.js"></script>
   </body>
 </html>

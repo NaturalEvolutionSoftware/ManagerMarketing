@@ -1,0 +1,31 @@
+ion-side-menu{
+    header.bar{
+        padding: 0px;
+        div{
+            width: 100%;
+            padding: 10px;
+            background: #006791;
+            h2{
+                font-size: 12pt;
+                color: white;
+            }
+        }
+    }
+    
+    ion-content{
+        background: lightgray;
+        
+        ion-list{
+            ion-item{
+                
+                h2,p{
+                    margin-bottom: 5px;
+                }
+                
+                i{
+                    color: #006791;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('App', [ 'ionic', 'ngRoute']).config(appConfigFunction).run(appRunFunction);
+angular.module('App', ['ionic', 'ngRoute']).config(appConfigFunction).run(appRunFunction);
 
 appConfigFunction.$inject = ['$stateProvider', '$urlRouterProvider'];
 function appConfigFunction($stateProvider, $urlRouterProvider){
@@ -19,11 +19,39 @@ function appConfigFunction($stateProvider, $urlRouterProvider){
 				'templateUrl' : 'views/public/login.html'
 			}
 		}
-	}).state('private.retos', {
-		'url' : '/retos',
+	}).state('public.forgot', {
+		'url' : '/forgot',
+		'views' : {
+			'public' : {
+				'templateUrl' : 'views/public/forgot.html'
+			}
+		}
+	}).state('private.main', {
+		'url' : '/main',
 		'views' : {
 			'private' : {
-				'templateUrl' : 'views/private/retos.html'
+				'templateUrl' : 'views/private/main.html'
+			}
+		}
+   }).state('private.users', {
+		'url' : '/users',
+		'views' : {
+			'private' : {
+				'templateUrl' : 'views/private/users.html'
+			}
+		}
+   }).state('private.data', {
+		'url' : '/data',
+		'views' : {
+			'private' : {
+				'templateUrl' : 'views/private/data.html'
+			}
+		}
+   }).state('private.contact', {
+		'url' : '/contact',
+		'views' : {
+			'private' : {
+				'templateUrl' : 'views/private/contact.html'
 			}
 		}
    });

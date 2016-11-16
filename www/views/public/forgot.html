@@ -1,0 +1,62 @@
+<ion-view view-title="forgot" ng-controller="forgotCtrl as vm">
+    <ion-header-bar class="bar-balanced">
+        <button class="button button-icon icon ion-arrow-left-c" ng-click="vm.goBack()"></button> 
+        <h1 class="title">Iniciar Sesión</h1>
+    </ion-header-bar>
+    <ion-content class="login has-header">
+        
+        <div class="row welcome-message">
+            <div class="col">Te enviaremos un correo electrónico con el código de cambio de contraseña</div>
+        </div>
+        
+        <div class="card" ng-if="!vm.isUserOk && !vm.isCodeOk">
+            <div class="item">
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Nombre de Usuario o Correo Electrónico Registrado</span>
+                        <input type="text" ng-model="vm.forgotData.recover" />
+                    </label>
+                    <div class="item login-btn-container">
+                        <button class="button button-balanced login-btn" ng-click="vm.sendCode()">
+                            Enviar Correo
+                        </button>      
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" ng-if="vm.isUserOk && !vm.isCodeOk">
+            <div class="item">
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Código Recibido</span>
+                        <input type="text" ng-model="vm.forgotData.code" />
+                    </label>
+                    <div class="item login-btn-container">
+                        <button class="button button-balanced login-btn" ng-click="vm.checkCode()">
+                            Confirmar Código
+                        </button>      
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" ng-if="vm.isCodeOk">
+            <div class="item">
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Nueva Contraseña</span>
+                        <input type="text" ng-model="vm.forgotData.password" />
+                    </label>
+                    <div class="item login-btn-container">
+                        <button class="button button-balanced login-btn" ng-click="vm.changePassword()">
+                            Cambiar Contraseña
+                        </button>      
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </ion-content>
+    
+</ion-view>

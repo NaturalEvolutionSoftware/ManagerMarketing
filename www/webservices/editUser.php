@@ -20,7 +20,6 @@ require 'conexion.php';
 	@$role= $request->role;
 	@$mail= $request->mail;
 	
-
 $Query = "	UPDATE `users` SET 	
 	`name` = '$name', 
 	`lastname` = '$lastname', 

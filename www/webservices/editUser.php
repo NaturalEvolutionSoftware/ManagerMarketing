@@ -19,6 +19,7 @@ require 'conexion.php';
 	@$birthdate = $request->birthdate;
 	@$role= $request->role;
 	@$mail= $request->mail;
+	@$permission= $request->permission;
 	
 $Query = "	UPDATE `users` SET 	
 	`name` = '$name', 
@@ -27,6 +28,7 @@ $Query = "	UPDATE `users` SET
 	`username` = '$username',
 	`mail` = '$mail',
 	`role` = '$role', 
+	`permission` = '$permission', 
 	`cc` = '$cc'
 	WHERE `users`.`id` = $id";
 

@@ -15,7 +15,7 @@ require 'conexion.php';
    
   
 //execute the SQL query and return records
-$result = mysql_query("SELECT `id`,`name`,`lastname`,`username`,`cc`,`birthdate`,`role`,`permission` FROM `users` where companyId = $companyId");
+$result = mysql_query("SELECT `id`,`name`,`lastname`,`username`,`mail`,`cc`,`birthdate`,`role`,`permission` FROM `users` where companyId = $companyId");
 
 if (mysql_num_rows($result)==0){	
 	print json_encode(json_decode("{}"));

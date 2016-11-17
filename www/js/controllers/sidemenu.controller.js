@@ -10,17 +10,27 @@ function sideMenuCtrlFunction($constants, $navigation, $session, $utils, $login,
    vm.goTo = changeView,
    vm.routes = $constants.routes.private,
    vm.logout = exit;
-    
-   initPrivateCtrl();
-    
+   vm.isBasic = checkRoleBasic;
+   vm.isSuperAdmin = checkRoleSuperAdmin;
+   vm.isSalePoint = checkSalePoint;
+   
    function changeView(view){
       $ionicSideMenuDelegate.toggleLeft();
       $navigation.goTo(view);       
    }
    
-   function initPrivateCtrl(){
-       $session.validateSession().then(sessionValidateSucceed, sessionValidateFailed);
-   }
+  function checkRoleBasic(){
+      return vm.user.permission === $constants.roles.basic;
+  }
+  
+  function checkRoleSuperAdmin(permission){
+      console.log(vm.user.permission === $constants.roles.superadmin);
+      return vm.user.permission === $constants.roles.superadmin;
+  }
+  
+  function checkSalePoint(){
+      return vm.company.category === $constants.companyTypes.salepoint;
+  }
    
    function sessionValidateSucceed(response){
         if($session.getUserData() !== null){
@@ -49,7 +59,7 @@ function sideMenuCtrlFunction($constants, $navigation, $session, $utils, $login,
         });
     }
     
-    $rootScope.$on('userDataChanged', function(event, args){
-        vm.user = args;
+    $rootScope.$on('userDataChanged', function(){
+        $session.validateSession().then(sessionValidateSucceed, sessionValidateFailed);
     });
 }

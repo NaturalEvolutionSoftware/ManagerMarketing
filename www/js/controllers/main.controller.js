@@ -10,7 +10,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     vm.constants = $constants,
 	vm.msg = $messages,
     vm.company = {},
-    vm.subcompanies = {},
+    vm.subcompanies = [],
     vm.curSubcompany = null,
     vm.openNewSuperAdminModal = newSuperAdminInit,
     vm.openNewCompanyModal = newCompanyInit,
@@ -29,13 +29,21 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     vm.newCompany = new modalForm($ionicModal, $scope, $constants.routes.modals.newCompany),
     vm.newSuperAdmin = new modalForm($ionicModal, $scope, $constants.routes.modals.newSuperAdmin),
     vm.newPass = new modalForm($ionicModal, $scope, $constants.routes.modals.newPassword);
+    vm.isSalePoint = checkCompanySalePoint;
     
     $scope.$on('$ionicView.enter', initCompaniesCtrl);
+    
+    function checkCompanySalePoint() {
+        return vm.company.category === $constants.companyTypes.salepoint;
+    }
     
     function sessionValidateSucceed(response){
         $ionicLoading.hide();
         if($session.getUserData() !== null){
             vm.user = $session.getUserData();
+            if(vm.user.permission !== $constants.roles.superadmin){
+                $navigation.goTo($constants.routes.private.data); 
+            }
             $session.getCompanyData().then(function(response){
                 vm.company = response;
             }, function(){console.error('fallo en carga de empresa desde variable de sesión')});
@@ -138,6 +146,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function editSuperAdmin(){
         var data = vm.newSuperAdmin.data;
+        data.permission = $constants.roles.superadmin;
         $users.editUser(data).then(editSuperAdminSucceed, editSuperAdminFailed);
     }
     

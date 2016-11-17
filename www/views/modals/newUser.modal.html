@@ -43,15 +43,11 @@
                     <span class="input-label">Cargo</span>
                     <input type="text" ng-model="vm.newUser.data.role" required>
                 </label>
-                <label class="item item-input item-select" ng-if="!vm.newUser.isEdit">
+                <label class="item item-input item-select" ng-if="!vm.newUser.isEdit || (vm.newUser.isEdit && (vm.isAdmin() || vm.isSuperAdmin()))">
                     <div class="input-label">
                         Permisos
                     </div>
-                    <select ng-model="vm.newUser.data.permission">
-                        <option value="{{vm.constants.roles.admin}}">Administrador</option>
-                        <option value="{{vm.constants.roles.query}}">Consulta</option>
-                        <option value="{{vm.constants.roles.basic}}">Básico</option>
-                    </select>
+                    <select ng-model="vm.newUser.data.permission" ng-options="item as item.label for item in vm.newUserOptions track by item.id"></select>
                 </label>
                 </div>
                 <div class="padding-left errorMessage" ng-show="vm.newUser.submitted && !addUserForm.$valid">

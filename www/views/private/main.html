@@ -2,11 +2,15 @@
 <ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
     <button class="button button-icon icon ion-navicon-round" ng-click="vm.toggleMenu()"></button> 
     <div class="h1 title">Subempresas de {{vm.company.name}}</div>
-    <button class="button button-icon icon ion-ios-briefcase" ng-click="vm.openNewCompanyModal()"></button> 
+    <button class="button button-clear button-light" ng-click="vm.openNewCompanyModal()" ng-if="!vm.isSalePoint()">Crear Empresa</button>
 </ion-header-bar>
 <ion-content class="main has-header">
     <div class="list">
-            <div ng-repeat="company in vm.subcompanies track by $index">
+            <label class="item item-input" ng-show="vm.subcompanies.length > 0">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Buscar" ng-model="search.$">
+            </label>
+            <div ng-repeat="company in vm.subcompanies | filter:search:strict track by $index">
                 <div class="item item-button-right" ng-click="vm.toggleShowAdmin(company)">
                         {{company.name}} 
                         <div class="buttons" ng-show="vm.user.id !== user.id">
@@ -37,7 +41,7 @@
                 </div>
                 <div class="item item-divider" ng-show="!vm.checkSuperAdmin(company) && company.showAdmin"> <span>No se ha asignado aun un administrador</span></div>
             </div>
-            <div class="item" ng-show="vm.subcompanies.length === 0 && vm.canUserSeeCompanies()">No hay empresas para mostrar</div>
+            <div class="item" ng-show="vm.subcompanies.length === 0">No se ha creado ninguna empresa</div>
      </div>
 </ion-content>
 </ion-view>

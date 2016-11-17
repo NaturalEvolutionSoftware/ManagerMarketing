@@ -80,6 +80,8 @@ function constantService(){
              'confirmUserDelete' : { 'title': 'Eliminar Usuario', 'template': 'Desea eliminar?'},
              'confirmCompanyDelete' : { 'title': 'Eliminar Empresa', 'template': 'Desea eliminar?'},
              'confirmSuperAdminDelete' : { 'title': 'Eliminar Super Administrador', 'template': 'Desea eliminar?'}
-         }
+         },
+         'newUserOptions' : [{id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}],
+         'editUserOptionsSuperAdmin' : [{id: 0, label: 'Super Administrador'}, {id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}]
       }
 };

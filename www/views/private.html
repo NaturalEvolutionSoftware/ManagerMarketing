@@ -19,10 +19,10 @@
         <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.data)">
           Mis Datos<i class="icon ion-ios-list-outline"></i>
         </ion-item>
-        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.users)">
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.users)" ng-show="!vm.isBasic()">
           Usuarios <i class="icon ion-person"></i>
         </ion-item>
-        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.main)">
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.main)" ng-show="vm.isSuperAdmin() && !vm.isSalePoint()">
           Empresas <i class="icon ion-ios-briefcase"></i>
         </ion-item>
         <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.contact)">

@@ -2,11 +2,12 @@
 <ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
     <button class="button button-icon icon ion-navicon-round" ng-click="vm.toggleMenu()"></button> 
     <div class="h1 title">Usuarios de {{vm.company.name}}</div>
-    <button class="button button-icon icon ion-person-add" ng-click="vm.openNewUserModal()"></button> 
+    <button class="button button-clear button-light" ng-click="vm.openNewUserModal()" ng-show="!vm.isQuery()">Crear Usuario</button>
+    <!--<button class="button button-icon icon ion-person-add" ng-click="vm.openNewUserModal()"></button>-->
 </ion-header-bar>
 <ion-content class="main has-header">
     <div class="list">
-        <label class="item item-input">
+        <label class="item item-input" ng-show="vm.companyUsers.length > 1">
             <i class="icon ion-search placeholder-icon"></i>
             <input type="text" placeholder="Buscar" ng-model="search.$">
         </label>
@@ -32,7 +33,7 @@
                <p>Cumpleaños: {{user.birthdate}}</p>
             </div>
         </div>
-        <div class="item item-divider" ng-show="vm.companyUsers.length === 0">No hay usuarios para mostrar</div>
+        <div class="item" ng-show="vm.companyUsers.length === 1">No se ha creado ningún usuario.</div>
      </div>
 </ion-content>
 </ion-view>

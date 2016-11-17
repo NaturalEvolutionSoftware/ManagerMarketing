@@ -8,7 +8,7 @@ require 'conexion.php';
     @$companyId = $request->companyId;
   
 //execute the SQL query and return records
-$Query = "SELECT id, name, lastname, cc, birthdate, username, role FROM users where companyId = $companyId AND permission = 0";
+$Query = "SELECT id, name, lastname, cc, mail, birthdate, username, role FROM users where companyId = $companyId AND permission = 0";
 $result = mysql_query($Query) or die(mysql_error());
 
 if (mysql_num_rows($result)==0){	

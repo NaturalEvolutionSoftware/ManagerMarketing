@@ -9601,4 +9601,7 @@ a.button {
 .card {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
 
+.button.button-light.button-clear {
+  color: #FFF; }
+
 /*# sourceMappingURL=ionic.app.css.map */

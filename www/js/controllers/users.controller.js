@@ -19,12 +19,29 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
    vm.toggleMenu = openMenu,
    vm.toggleDetails = toggleShowDetails,
    vm.isCurrentUser = isUser;
+   vm.newUserOptions = $constants.newUserOptions;
+   vm.isQuery = checkRoleQuery;
+   vm.isAdmin = checkRoleAdmin;
+   vm.isSuperAdmin = checkRoleSuperAdmin;
+   vm.user = {};
    
    $scope.$on('$ionicView.enter', initUsersCtrl);
    
    function initUsersCtrl(){
        $ionicLoading.show();
        $session.validateSession().then(sessionValidateSucceed, sessionValidateFailed);
+   }
+   
+   function checkRoleQuery(){
+      return vm.user.permission === $constants.roles.query;
+   }
+   
+   function checkRoleAdmin(){
+      return vm.user.permission === $constants.roles.admin;
+   }
+   
+   function checkRoleSuperAdmin(){
+      return vm.user.permission === $constants.roles.superadmin;
    }
    
    function isUser(user){
@@ -34,7 +51,8 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
    function newUserInit(){
       vm.newUser.isEdit = false; 
       vm.newUser.data = {};
-      vm.newUser.data.permission = $constants.roles.basic;
+      vm.newUserOptions = $constants.newUserOptions;
+      vm.newUser.data.permission = vm.newUserOptions[2];
       vm.newUser.open();
     }
     
@@ -46,6 +64,10 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     }
     
     function editUserInit(user){
+        var idx;
+        vm.newUserOptions = $constants.newUserOptions;
+        idx = user.permission - 1;
+        
         vm.newUser.data = {
            'userId'      : user.id,
            'username'    : user.username,
@@ -54,7 +76,8 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
            'mail'        : user.mail,
            'cc'          : parseInt(user.cc),
            'birthdate'   : new Date(user.birthdate),
-           'role'        : user.role
+           'role'        : user.role,
+           'permission'  : vm.newUserOptions[idx]
         };
         vm.newUser.isEdit = true; 
         vm.newUser.open();
@@ -64,20 +87,21 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
         $ionicLoading.hide();
         if($session.getUserData() !== null){
             vm.user = $session.getUserData();
+            if(vm.user.permission === $constants.roles.basic){
+                $navigation.goTo($constants.routes.private.data); 
+            }
             $ionicLoading.show();
             $session.getCompanyData().then(function(response){
                 vm.company = response;
             }, function(){console.error('fallo en carga de empresa desde variable de sesión')});
             $company.getUsers(vm.user.companyId).then(updateCompanyUsersSucceed, updateCompanyUsersFailed);
         }else{
-            alert('no hay ninguna sesión de usuario activa');
             $navigation.goTo($constants.routes.public.login);  
         }
     }
     
     function sessionValidateFailed(error){
         $ionicLoading.hide();
-        alert('no se puede validar sesión contra el servidor');
         $navigation.goTo($constants.routes.public.login);
     }
     
@@ -130,7 +154,7 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
             'password'    : data.password,
             'mail'        : data.mail,
             'role'        : data.role,
-            'permission'  : data.permission,
+            'permission'  : data.permission.id,
             'companyId'   : vm.company.id
         };
         
@@ -139,6 +163,7 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
     function editUser(){
         var data = vm.newUser.data;
+        data.permission = data.permission.id;
         $users.editUser(data).then(editUserSucceed, editUserFailed);
     }
     
@@ -156,7 +181,6 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
         if(response.data.status){
             vm.newUser.close();
             updateCompanyUsers();
-            alert('el usuario fue creado exitosamente');
         }else{
             console.error('ocurrió un error con la base de datos: '+ response.data);
         }
@@ -164,7 +188,6 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
     function createUserFailed(error) {
         $ionicLoading.hide();
-        alert('fallo en la creación de usuarios');
         console.error(error);
     }
     
@@ -172,7 +195,6 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
         $ionicLoading.hide();
         if(response.data.status){
             vm.newPass.close();
-            alert('contraseña cambiada correctamente');
         }else{
             console.error('ocurrió un error con la base de datos: '+ response.data);
         }
@@ -180,7 +202,6 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
     function changePasswordFailed(error) {
         $ionicLoading.hide();
-        alert('fallo en el cambio de contraseña');
         console.error(error);
     }
     
@@ -188,8 +209,7 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
         $ionicLoading.hide();
         if(response.data.status){
             vm.newUser.close();
-            updateCompanyUsers();
-            alert('datos modificados correctamente');   
+            updateCompanyUsers(); 
         }else{
             console.error('ocurrió un error con la base de datos: '+ response.data);
             console.error(response.data);
@@ -198,24 +218,21 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
     function editUserFailed(error) {
         $ionicLoading.hide();
-        alert('fallo en la edición de usuarios');
         console.error(error);
     }
     
     function deleteUserSucceed(response) {
         $ionicLoading.hide();
         updateCompanyUsers();
-        alert('usuario eliminado correctamente');
     }
     
     function deleteUserFailed(error){
         $ionicLoading.hide();
-        alert('fallo en la eliminación de usuario');
         console.error(error);
     }
     
     function canModify(user){
-        return (vm.user.id !== user.id) && (parseInt(vm.user.permission) <= parseInt(user.permission));
+        return (vm.user.id !== user.id) && (parseInt(vm.user.permission) <= parseInt(user.permission)) && (parseInt(vm.user.permission) <= $constants.roles.admin);
     }
     
     function openMenu(){

@@ -15,14 +15,25 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
     vm.openNewPass = newPassInit;
     vm.submitNewPass = submitPassword;
     vm.newPass = new modalForm($ionicModal, $scope, $constants.routes.modals.newPassword);
+    vm.newUserOptions = $constants.newUserOptions;
+    vm.isAdmin = checkRoleAdmin;
+    vm.isSuperAdmin = checkRoleSuperAdmin;
     
     $scope.$on('$ionicView.enter', initDataCtrl);
+    
+    function checkRoleAdmin(){
+      return vm.user.permission === $constants.roles.admin;
+   }
+   
+   function checkRoleSuperAdmin(){
+      return vm.user.permission === $constants.roles.superadmin;
+   }
     
    function initDataCtrl(){
        $session.validateSession().then(sessionValidateSucceed, sessionValidateFailed);
    }
    
-   function sessionValidateSucceed(response){
+   function sessionValidateSucceed(){
         if($session.getUserData() !== null){
             vm.user = $session.getUserData();
         }else{
@@ -38,6 +49,16 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
     }
     
     function editUserInit(){
+        
+        var idx;
+        if(vm.user.permission === $constants.roles.superadmin){
+            vm.newUserOptions = $constants.editUserOptionsSuperAdmin;
+            idx = vm.user.permission;
+        }else{
+            vm.newUserOptions = $constants.newUserOptions;
+            idx = vm.user.permission - 1;
+        }
+        
         vm.newUser.data = {
            'userId'      : vm.user.id,
            'username'    : vm.user.username,
@@ -46,6 +67,7 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
            'mail'        : vm.user.mail,
            'cc'          : parseInt(vm.user.cc),
            'birthdate'   : new Date(vm.user.birthdate),
+           'permission'  : vm.newUserOptions[idx],
            'role'        : vm.user.role
         };
         vm.newUser.isEdit = true; 
@@ -54,6 +76,7 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
     
     function editUser(){
         var data = vm.newUser.data;
+        data.permission = data.permission.id;
         $ionicLoading.show();
         $users.editUser(data).then(editUserSucceed, editUserFailed);
     }
@@ -62,10 +85,8 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
         $ionicLoading.hide();
         if(response.data.status){
             $users.getUser(vm.user.id).then(function(response){
-                console.log(response.data);
                 $session.setAuthenticatedUser(response.data);
                 vm.user = response.data;
-                $rootScope.$broadcast('userDataChanged', response.data);
             }, function(error){console.error(error);})
             
             vm.newUser.close();   

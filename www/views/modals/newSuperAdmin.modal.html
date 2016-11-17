@@ -20,7 +20,7 @@
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cédula</span>
-                    <input type="text" ng-model="vm.newSuperAdmin.data.cc" required>
+                    <input type="number" ng-model="vm.newSuperAdmin.data.cc" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Fecha de Nacimiento</span>
@@ -33,6 +33,10 @@
                 <label class="item item-input item-stacked-label" ng-if="!vm.newSuperAdmin.isEdit">
                     <span class="input-label">Contraseña</span>
                     <input type="password" placeholder="Contraseña" ng-model="vm.newSuperAdmin.data.password" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Correo Electrónico</span>
+                    <input type="text" ng-model="vm.newSuperAdmin.data.mail" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cargo</span>

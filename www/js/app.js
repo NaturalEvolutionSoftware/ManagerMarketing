@@ -54,6 +54,13 @@ function appConfigFunction($stateProvider, $urlRouterProvider){
 				'templateUrl' : 'views/private/contact.html'
 			}
 		}
+   }).state('private.backup', {
+		'url' : '/backup',
+		'views' : {
+			'private' : {
+				'templateUrl' : 'views/private/backup.html'
+			}
+		}
    });
 
 	$urlRouterProvider.otherwise('/public/login');

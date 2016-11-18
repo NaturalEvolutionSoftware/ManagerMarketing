@@ -1,0 +1,28 @@
+<ion-view ng-controller="backupController as vm">
+<ion-header-bar class="bar-balanced" ng-init="vm.checkUser()">
+    <button class="button button-icon icon ion-navicon-round" ng-click="vm.toggleMenu()"></button> 
+    <div class="h1 title">Copia de Seguridad</div>
+</ion-header-bar>
+<ion-content class="backup has-header">
+        <div class="list">
+            <div class="item item-divider">Descarga una copia del estado actual del sistema <button class="btn" ng-click="vm.downloadDB()">Descargar</button></div>
+        </div>
+     
+        <h2>Restaurar Sistema <h2>
+            
+        <h5>Reconstruye la base de datos a partir de un archivo SQL de respaldo.</h5>
+     
+        <div class="card">
+            <div class="item">
+                <div class="list">
+                   <input id="recover" name="recover" onchange="angular.element(this).scope().updateFileData(this)" type="file" accept=".sql" />
+                    <div class="item login-btn-container">
+                        <button ng-disabled="!vm.isFileReady()" class="button button-balanced login-btn" ng-click="vm.sendBackup()">
+                            Restaurar Sistema
+                        </button>      
+                    </div>
+                </div>
+            </div>
+        </div>
+</ion-content>
+</ion-view>

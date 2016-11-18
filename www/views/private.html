@@ -25,6 +25,9 @@
         <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.main)" ng-show="vm.isSuperAdmin() && !vm.isSalePoint()">
           Empresas <i class="icon ion-ios-briefcase"></i>
         </ion-item>
+        <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.backup)" ng-show="vm.isSuperAdmin() && vm.isSystemAdmin()">
+          Copia de Respaldo <i class="icon ion-android-warning"></i>
+        </ion-item>
         <ion-item class="item-icon-right" menu-close ng-click="vm.goTo(vm.routes.contact)">
           Contacto <i class="icon ion-ios-telephone"></i>
         </ion-item>

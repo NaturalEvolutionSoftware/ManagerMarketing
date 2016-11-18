@@ -26,7 +26,8 @@ function constantService(){
                 'main'     : '/private/main',
                 'users'    : '/private/users',
                 'data'     : '/private/data',
-                'contact'  : '/private/contact'
+                'contact'  : '/private/contact',
+                'backup'   : '/private/backup'
             },
             'public' : {
                 'login'     : '/public/login',
@@ -74,12 +75,15 @@ function constantService(){
              'getMessages'     : 'getMessages.php',
              'getUserForgot'   : 'getUserForgot.php',
              'sendCode'        : 'sendCode.php',
-             'checkCode'       : 'checkCode.php'
+             'checkCode'       : 'checkCode.php',
+             'backup'          : 'backup.php',
+             'restore'         : 'restore.php'
          },
          'popups' : {
              'confirmUserDelete' : { 'title': 'Eliminar Usuario', 'template': 'Desea eliminar?'},
              'confirmCompanyDelete' : { 'title': 'Eliminar Empresa', 'template': 'Desea eliminar?'},
-             'confirmSuperAdminDelete' : { 'title': 'Eliminar Super Administrador', 'template': 'Desea eliminar?'}
+             'confirmSuperAdminDelete' : { 'title': 'Eliminar Super Administrador', 'template': 'Desea eliminar?'},
+             'confirmBackup' : { 'title': 'Restaurar Sistema', 'template': 'Está seguro que desea restaurar el sistema? Los datos que no hayan sido consignados en el archivo de respaldo se perderán.'}
          },
          'newUserOptions' : [{id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}],
          'editUserOptionsSuperAdmin' : [{id: 0, label: 'Super Administrador'}, {id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}]

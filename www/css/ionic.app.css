@@ -9604,4 +9604,7 @@ a.button {
 .button.button-light.button-clear {
   color: #FFF; }
 
+ion-content h2, ion-content h5 {
+  margin-left: 20px; }
+
 /*# sourceMappingURL=ionic.app.css.map */

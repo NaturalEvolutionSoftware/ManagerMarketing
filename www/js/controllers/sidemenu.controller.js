@@ -13,6 +13,7 @@ function sideMenuCtrlFunction($constants, $navigation, $session, $utils, $login,
    vm.isBasic = checkRoleBasic;
    vm.isSuperAdmin = checkRoleSuperAdmin;
    vm.isSalePoint = checkSalePoint;
+   vm.isSystemAdmin = checkSystemAdmin;
    
    function changeView(view){
       $ionicSideMenuDelegate.toggleLeft();
@@ -24,12 +25,15 @@ function sideMenuCtrlFunction($constants, $navigation, $session, $utils, $login,
   }
   
   function checkRoleSuperAdmin(permission){
-      console.log(vm.user.permission === $constants.roles.superadmin);
       return vm.user.permission === $constants.roles.superadmin;
   }
   
   function checkSalePoint(){
       return vm.company.category === $constants.companyTypes.salepoint;
+  }
+  
+  function checkSystemAdmin(){
+      return vm.company.category === $constants.companyTypes.systemAdmin;
   }
    
    function sessionValidateSucceed(response){

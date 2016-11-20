@@ -28,7 +28,7 @@ function loginService($q, $http, $session, $users, $constants){
   }
   
   function logOut(){
-     $session.setAuthenticatedUser(null);
+     $session.clear();
      return $http.post($constants.serverUrl + $constants.services.logout, {});
   }
   

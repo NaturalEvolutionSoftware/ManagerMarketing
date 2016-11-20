@@ -13,7 +13,7 @@ function privateCtrlFunction($scope, $ionicSideMenuDelegate, $rootScope){
    
    $scope.$watch(function() { return $ionicSideMenuDelegate.isOpen(); }, function(isOpen) {
         if (isOpen) {
-            $rootScope.$broadcast('userDataChanged', vm.user);
+            $rootScope.$broadcast('userDataChanged');
         }
     });
   

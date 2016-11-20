@@ -36,6 +36,11 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
    function sessionValidateSucceed(){
         if($session.getUserData() !== null){
             vm.user = $session.getUserData();
+            console.log(vm.user);
+            $session.getCompanyData().then(function(response){
+               vm.company = response;
+               console.log(vm.company);
+            }, function(){console.error('fallo en carga de empresa desde variable de sesión')});
         }else{
             alert('no hay ninguna sesión de usuario activa');
             $navigation.goTo($constants.routes.public.login); 

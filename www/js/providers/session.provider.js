@@ -3,6 +3,7 @@ angular.module('App').factory('$session', sessionService);
 sessionService.$inject = ['$q', '$http', '$constants', '$company'];
 function sessionService($q, $http, $constants, $company){
   var self= {
+      'clear' : clearAuthData,
       'setAuthenticatedUser' : setAuthUser,
       'getUserData' : getAuthUser,
       'getCompanyData' : getAuthCompany,
@@ -14,8 +15,13 @@ function sessionService($q, $http, $constants, $company){
       'company' : null
   };
   
-  function setAuthUser(userdata){
-      authData.user = userdata
+  function clearAuthData(){
+      authData.user = null;
+      authData.company = null;
+  }
+  
+  function setAuthUser(user){
+      authData.user = user;
   }
   
   function getAuthUser(){

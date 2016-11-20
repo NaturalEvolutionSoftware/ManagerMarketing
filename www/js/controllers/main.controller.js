@@ -90,6 +90,9 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
             'nit'  : data.nit,
             'category' : $utils.getSubCompanyType(vm.company.category)
         }
+        
+        console.log(vm.company.category, $utils.getSubCompanyType(vm.company.category));
+        
         $company.createCompany(companyData).then(createCompanySucceed, createCompanyFailed);
     }
     

@@ -25,6 +25,11 @@ function forgotController($constants, $forgot, $scope, $navigation, $users) {
        vm.isUserOk = false;
        vm.isCodeOk = false;
        vm.userId = -1;
+       vm.forgotData = {
+        'recover' : '',
+        'code'    : '',
+        'password': ''
+    };
    }
     
     function checkUserForCode() {
@@ -84,6 +89,17 @@ function forgotController($constants, $forgot, $scope, $navigation, $users) {
             'userId' : vm.userId,
             'password' : vm.forgotData.password
         };
+        
+        if(vm.forgotData.password.length === 0){
+            alert('La nueva contraseña no puede estar vacía');
+            return;
+        }
+        
+        if(vm.forgotData.password !== vm.forgotData.confirm){
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+        
         $users.changePassword(data).then(changePasswordSucceed, changePasswordFailed);
     }
     

@@ -140,6 +140,16 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     }
     
     function submitPassword(valid){
+        
+        vm.newPass.submitted = true;
+        
+        if (!valid) {return;}
+        
+        if(vm.newPass.data.password !== vm.newPass.data.confirm){
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+        
         $users.changePassword(vm.newPass.data).then(changePasswordSucceed, changePasswordFailed);
     }
     

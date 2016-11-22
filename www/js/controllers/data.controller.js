@@ -4,8 +4,8 @@ angular.module('App')
 
 .controller('dataCtrl', dataController);
 
-dataController.$inject = ['$scope', '$session', '$users', '$ionicLoading', '$ionicModal', '$constants', '$rootScope'];
-function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $constants, $rootScope) {
+dataController.$inject = ['$scope', '$session', '$users', '$ionicLoading', '$ionicModal', '$constants', '$rootScope', '$navigation'];
+function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $constants, $rootScope, $navigation) {
     var vm = this;
     vm.user = {};
     vm.newUser = new modalForm($ionicModal, $scope, $constants.routes.modals.newUser);
@@ -36,10 +36,8 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
    function sessionValidateSucceed(){
         if($session.getUserData() !== null){
             vm.user = $session.getUserData();
-            console.log(vm.user);
             $session.getCompanyData().then(function(response){
                vm.company = response;
-               console.log(vm.company);
             }, function(){console.error('fallo en carga de empresa desde variable de sesión')});
         }else{
             alert('no hay ninguna sesión de usuario activa');
@@ -120,7 +118,14 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
     
     function submitPassword(valid){
         
+        vm.newPass.submitted = true;
+        
         if(!valid){
+            return;
+        }
+        
+        if(vm.newPass.data.password !== vm.newPass.data.confirm){
+            alert('Las contraseñas no coinciden');
             return;
         }
         

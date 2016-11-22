@@ -48,6 +48,12 @@
                         <span class="input-label">Nueva Contraseña</span>
                         <input type="password" ng-model="vm.forgotData.password" />
                     </label>
+                    
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Confirmar Contraseña</span>
+                        <input type="password" ng-model="vm.forgotData.confirm" />
+                    </label>
+                    
                     <div class="item login-btn-container">
                         <button class="button button-balanced login-btn" ng-click="vm.changePassword()">
                             Cambiar Contraseña

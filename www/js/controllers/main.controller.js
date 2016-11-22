@@ -91,8 +91,6 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
             'category' : $utils.getSubCompanyType(vm.company.category)
         }
         
-        console.log(vm.company.category, $utils.getSubCompanyType(vm.company.category));
-        
         $company.createCompany(companyData).then(createCompanySucceed, createCompanyFailed);
     }
     
@@ -329,7 +327,14 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function submitPassword(valid){
         
+        vm.newPass.submitted = true;
+        
         if(!valid){
+            return;
+        }
+        
+        if(vm.newPass.data.password !== vm.newPass.data.confirm){
+            alert('Las contraseñas no coinciden');
             return;
         }
         

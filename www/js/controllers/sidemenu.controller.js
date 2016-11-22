@@ -41,7 +41,6 @@ function sideMenuCtrlFunction($constants, $navigation, $session, $utils, $login,
             vm.user = $session.getUserData();
             $session.getCompanyData().then(function(response){
                 vm.company = response;
-                console.log(vm.company);
             }, function(){console.error('fallo en carga de empresa desde variable de sesión')});
         }else{
             alert('no hay ninguna sesión de usuario activa');

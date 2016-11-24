@@ -6,7 +6,9 @@ function utilsService($constants){
   var self= {
       'getRoleName' : returnRoleName,
       'getSubCompanyType' : getCompanyType,
-      'getCompanyTag' : returnCompanyTag
+      'getCompanyTag' : returnCompanyTag,
+      'getDateString' : getStrDate,
+      'checkPassword' : validatePassword
   };
   
   function returnRoleName(userRole){
@@ -64,6 +66,34 @@ function utilsService($constants){
               return $constants.companyTags.salepoint;
           }
       }
+  }
+  
+  function getStrDate(date){
+      var MyDateString = date.getFullYear() + '-'
+             + ('0' + (date.getMonth()+1)).slice(-2) + '-'
+             + ('0' + date.getDate()).slice(-2);
+      
+      return MyDateString + ' 00:00:00';
+  }
+  
+  function validatePassword(password, confirm){
+       
+       if(password !== confirm){
+            alert('Las contraseñas no coinciden');
+            return false;
+        }
+        
+        if(password.length < 5){
+            alert('La contraseña debe tener al menos 5 caracteres');
+            return false;
+        }
+        
+        if (password.match(/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/) === null) {
+            alert('la contraseña debe tener al menos un número y una letra');
+            return false;
+        }
+        
+        return true;
   }
   
   return self;

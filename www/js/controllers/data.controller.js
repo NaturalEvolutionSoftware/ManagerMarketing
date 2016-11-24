@@ -4,8 +4,8 @@ angular.module('App')
 
 .controller('dataCtrl', dataController);
 
-dataController.$inject = ['$scope', '$session', '$users', '$ionicLoading', '$ionicModal', '$constants', '$rootScope', '$navigation'];
-function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $constants, $rootScope, $navigation) {
+dataController.$inject = ['$scope', '$session', '$users', '$ionicLoading', '$ionicModal', '$constants', '$rootScope', '$navigation', '$utils'];
+function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $constants, $rootScope, $navigation, $utils) {
     var vm = this;
     vm.user = {};
     vm.newUser = new modalForm($ionicModal, $scope, $constants.routes.modals.newUser);
@@ -62,6 +62,8 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
             idx = vm.user.permission - 1;
         }
         
+        console.log(vm.user.birthdate);
+        
         vm.newUser.data = {
            'userId'      : vm.user.id,
            'username'    : vm.user.username,
@@ -69,7 +71,7 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
            'lastname'    : vm.user.lastname,
            'mail'        : vm.user.mail,
            'cc'          : parseInt(vm.user.cc),
-           'birthdate'   : new Date(vm.user.birthdate),
+           'birthdate'   : new Date(vm.user.birthdate + ' 00:00:00'),
            'permission'  : vm.newUserOptions[idx],
            'role'        : vm.user.role
         };
@@ -77,7 +79,14 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
         vm.newUser.open();
     }
     
-    function editUser(){
+    function editUser(valid){
+        
+        vm.newUser.submitted = true;
+        
+        if(!valid){
+            return;
+        }
+        
         var data = vm.newUser.data;
         data.permission = data.permission.id;
         $ionicLoading.show();
@@ -86,6 +95,12 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
     
     function editUserSucceed(response){
         $ionicLoading.hide();
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('La cédula proporcionada ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             $users.getUser(vm.user.id).then(function(response){
                 $session.setAuthenticatedUser(response.data);
@@ -124,8 +139,10 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
             return;
         }
         
-        if(vm.newPass.data.password !== vm.newPass.data.confirm){
-            alert('Las contraseñas no coinciden');
+        if(!$utils.checkPassword(vm.newPass.data.password, vm.newPass.data.confirm)){
+            vm.newPass.submitted = false;
+            vm.newPass.data.password = '';
+            vm.newPass.data.confirm = '';
             return;
         }
         

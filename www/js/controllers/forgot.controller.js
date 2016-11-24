@@ -4,8 +4,8 @@ angular.module('App')
 
 .controller('forgotCtrl', forgotController);
 
-forgotController.$inject = ['$constants', '$forgot', '$scope', '$navigation', '$users'];
-function forgotController($constants, $forgot, $scope, $navigation, $users) {
+forgotController.$inject = ['$constants', '$forgot', '$scope', '$navigation', '$users', '$utils'];
+function forgotController($constants, $forgot, $scope, $navigation, $users, $utils) {
     var vm = this;
 	vm.forgotData = {
         'recover' : '',
@@ -90,13 +90,9 @@ function forgotController($constants, $forgot, $scope, $navigation, $users) {
             'password' : vm.forgotData.password
         };
         
-        if(vm.forgotData.password.length === 0){
-            alert('La nueva contraseña no puede estar vacía');
-            return;
-        }
-        
-        if(vm.forgotData.password !== vm.forgotData.confirm){
-            alert('Las contraseñas no coinciden');
+        if(!$utils.checkPassword(vm.forgotData.password, vm.forgotData.confirm)){
+            vm.forgotData.password = '';
+            vm.forgotData.confirm = '';
             return;
         }
         

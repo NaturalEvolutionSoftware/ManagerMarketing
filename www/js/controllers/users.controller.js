@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('App').controller('usersCtrl', usersCtrlFunction);
-usersCtrlFunction.$inject = ['$scope', '$ionicPopup', '$ionicLoading', '$constants','$ionicModal', '$session', '$company', '$users', '$navigation'];
-function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ionicModal, $session, $company, $users, $navigation){
+usersCtrlFunction.$inject = ['$scope', '$ionicPopup', '$ionicLoading', '$constants','$ionicModal', '$session', '$company', '$users', '$navigation', '$utils'];
+function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ionicModal, $session, $company, $users, $navigation, $utils){
    
    var vm = this;
    
@@ -75,7 +75,7 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
            'lastname'    : user.lastname,
            'mail'        : user.mail,
            'cc'          : parseInt(user.cc),
-           'birthdate'   : new Date(user.birthdate),
+           'birthdate'   : new Date(user.birthdate + ' 00:00:00'),
            'role'        : user.role,
            'permission'  : vm.newUserOptions[idx]
         };
@@ -145,8 +145,10 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
         
         if (!valid) {return;}
         
-        if(vm.newPass.data.password !== vm.newPass.data.confirm){
-            alert('Las contraseñas no coinciden');
+        if(!$utils.checkPassword(vm.newPass.data.password, vm.newPass.data.confirm)){
+            vm.newPass.submitted = false;
+            vm.newPass.data.password = '';
+            vm.newPass.data.confirm = '';
             return;
         }
         
@@ -188,6 +190,14 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
     function createUserSucceed(response){
         $ionicLoading.hide();
+        
+        console.log(response);
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('La cédula proporcionada ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             vm.newUser.close();
             updateCompanyUsers();
@@ -217,6 +227,12 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     
      function editUserSucceed(response){
         $ionicLoading.hide();
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('La cédula proporcionada ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             vm.newUser.close();
             updateCompanyUsers(); 

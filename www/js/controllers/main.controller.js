@@ -101,10 +101,15 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function editCompanySucceed(response){
         $ionicLoading.hide();
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('El NIT proporcionado ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             updateSubCompanies();
             vm.newCompany.close();
-            //alert('contraseña cambiada correctamente');
         }else{
             console.error('ocurrió un error con la base de datos: '+ response.data);
         }
@@ -151,10 +156,22 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
         $users.editUser(data).then(editSuperAdminSucceed, editSuperAdminFailed);
     }
     
-    function editSuperAdminSucceed(){
+    function editSuperAdminSucceed(response){
         $ionicLoading.hide();
-        vm.newSuperAdmin.close();
-        updateSuperAdmins();
+        
+         if(!response.data.hasOwnProperty('status')){
+            alert('La cédula proporcionada ya existe en el sistema.');
+            return;
+        }
+        
+        if(response.data.status){
+            vm.newSuperAdmin.close();
+            updateSuperAdmins();
+        }else{
+            console.error('ocurrió un error con la base de datos: '+ response.data);
+            console.error(response.data);
+        }
+        
         //alert('Los datos del super administrador fueron actualizados correctamente')
     }
     
@@ -205,10 +222,15 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function createCompanySucceed(response){
         $ionicLoading.hide();
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('EL NIT propocionado ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             vm.newCompany.close();
             updateSubCompanies();
-            //alert('Empresa creada exitosamente');
         }else{
             console.error('ocurrió un error con la base de datos: '+ response.data);
         }
@@ -222,6 +244,12 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function createSuperAdminSucceed(response) {
         $ionicLoading.hide();
+        
+        if(!response.data.hasOwnProperty('status')){
+            alert('La cédula proporcionada ya existe en el sistema.');
+            return;
+        }
+        
         if(response.data.status){
             vm.newSuperAdmin.close();
             updateSuperAdmins();
@@ -257,6 +285,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function newCompanyInit(){
         vm.newCompany.data = {};
+        vm.newCompany.submitted = false;
         vm.newCompany.open();
     }
     
@@ -311,7 +340,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
            'lastname'    : user.lastname,
            'mail'        : user.mail,
            'cc'          : parseInt(user.cc),
-           'birthdate'   : new Date(user.birthdate),
+           'birthdate'   : new Date(user.birthdate + ' 00:00:00'),
            'role'        : user.role
         };
         vm.newSuperAdmin.isEdit = true; 
@@ -333,8 +362,10 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
             return;
         }
         
-        if(vm.newPass.data.password !== vm.newPass.data.confirm){
-            alert('Las contraseñas no coinciden');
+        if(!$utils.checkPassword(vm.newPass.data.password, vm.newPass.data.confirm)){
+            vm.newPass.submitted = false;
+            vm.newPass.data.password = '';
+            vm.newPass.data.confirm = '';
             return;
         }
         

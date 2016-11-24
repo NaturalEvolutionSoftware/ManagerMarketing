@@ -1,7 +1,7 @@
 angular.module('App').factory('$users', userService);
 
-userService.$inject = ['$constants', '$http'];
-function userService($constants, $http){ 
+userService.$inject = ['$constants', '$http', '$utils'];
+function userService($constants, $http, $utils){ 
   var users;
     
   var self= {
@@ -18,6 +18,8 @@ function userService($constants, $http){
   }
   
   function newUser(userData){
+      userData.password = CryptoJS.MD5(userData.password).toString(CryptoJS.enc.Base64);
+      userData.strbirthdate = $utils.getDateString(userData.birthdate);
       return $http.post($constants.serverUrl + $constants.services.createUser, userData);
   }
   
@@ -27,10 +29,12 @@ function userService($constants, $http){
   }
   
   function modifyUser(userData){
+      userData.strbirthdate = $utils.getDateString(userData.birthdate);
       return $http.post($constants.serverUrl + $constants.services.editUser, userData);
   }
   
   function editPassword(userData){
+      userData.password = CryptoJS.MD5(userData.password).toString(CryptoJS.enc.Base64);
       return $http.post($constants.serverUrl + $constants.services.editPassword, userData);
   }
   

@@ -16,27 +16,35 @@ require 'conexion.php';
 	@$username = $request->username;
     @$lastname = $request->lastname;
     @$cc = $request->cc;
-	@$birthdate = $request->birthdate;
+	@$birthdate = $request->strbirthdate;
 	@$role= $request->role;
 	@$mail= $request->mail;
 	@$permission= $request->permission;
 	
-$Query = "	UPDATE `users` SET 	
-	`name` = '$name', 
-	`lastname` = '$lastname', 
-	`birthdate` = '$birthdate',
-	`username` = '$username',
-	`mail` = '$mail',
-	`role` = '$role', 
-	`permission` = '$permission', 
-	`cc` = '$cc'
-	WHERE `users`.`id` = $id";
+$ValidationQuery = "SELECT id FROM users where cc = $cc and id <> $id";
+$ValidationResult = mysql_query($ValidationQuery) or die(mysql_error());
 
-$result = mysql_query($Query)or die(mysql_error());
-if ($result) {
-   print json_encode(json_decode('{"status": true}'));
-} else {
-    print json_encode(json_decode('{"status": false}'));
+if (mysql_num_rows($ValidationResult)!=0){
+	print json_encode(json_decode("{}"));
+}else
+{	
+	$Query = "	UPDATE `users` SET 	
+		`name` = '$name', 
+		`lastname` = '$lastname', 
+		`birthdate` = '$birthdate',
+		`username` = '$username',
+		`mail` = '$mail',
+		`role` = '$role', 
+		`permission` = '$permission', 
+		`cc` = '$cc'
+		WHERE `users`.`id` = $id";
+
+	$result = mysql_query($Query)or die(mysql_error());
+	if ($result) {
+	print json_encode(json_decode('{"status": true}'));
+	} else {
+		print json_encode(json_decode('{"status": false}'));
+	}
 }
 
 mysql_close($dbhandle);

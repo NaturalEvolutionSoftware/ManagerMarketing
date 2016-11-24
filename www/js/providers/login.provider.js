@@ -12,7 +12,7 @@ function loginService($q, $http, $session, $users, $constants){
        
        var data = {
            'username' : loginData.username,
-           'password' : loginData.password
+           'password' : CryptoJS.MD5(loginData.password).toString(CryptoJS.enc.Base64)
        }
 
        $http.post($constants.serverUrl + $constants.services.login, data).then(function(response){

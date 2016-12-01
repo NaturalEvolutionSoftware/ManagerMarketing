@@ -395,7 +395,6 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function changeSuperAdminInit(subcompany){
         vm.curSubcompany = subcompany.id;
         vm.changeSuperAdmin.data.company = subcompany;
-        console.log(subcompany);
         $ionicLoading.show();
         $company.getUsers(subcompany.id).then(getCompanyUsersSucceed, getCompanyUsersFailed);
     }
@@ -403,7 +402,6 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function getCompanyUsersSucceed(response){
         $ionicLoading.hide();
         vm.possibleSuperAdmins = response.data;
-        console.log(response);
         vm.changeSuperAdmin.open();
     }
     

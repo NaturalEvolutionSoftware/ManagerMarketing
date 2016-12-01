@@ -20,7 +20,7 @@
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cédula</span>
-                    <input type="number" ng-model="vm.newSuperAdmin.data.cc" required>
+                    <input type="number" placeholder="Cédula" ng-model="vm.newSuperAdmin.data.cc" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Fecha de Nacimiento</span>
@@ -34,13 +34,17 @@
                     <span class="input-label">Contraseña</span>
                     <input type="password" placeholder="Contraseña" ng-model="vm.newSuperAdmin.data.password" required>
                 </label>
+                <label class="item item-input item-stacked-label" ng-if="!vm.newSuperAdmin.isEdit">
+                    <span class="input-label">Confirmar Contraseña</span>
+                    <input type="password" placeholder="Confirmar Contraseña" ng-model="vm.newSuperAdmin.data.confirm" required>
+                </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Correo Electrónico</span>
-                    <input type="text" ng-model="vm.newSuperAdmin.data.mail" required>
+                    <input type="text" placeholder="Correo" ng-model="vm.newSuperAdmin.data.mail" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cargo</span>
-                    <input type="text" ng-model="vm.newSuperAdmin.data.role" required>
+                    <input type="text" placeholder="Cargo" ng-model="vm.newSuperAdmin.data.role" required>
                 </label>
                 <div class="padding-left errorMessage" ng-show="vm.newSuperAdmin.submitted && !addSuperAdminForm.$valid">
                     No puedes dejar campos vacíos

@@ -37,7 +37,8 @@ function constantService(){
                  'newUser' : 'views/modals/newUser.modal.html',
                  'newCompany' : 'views/modals/newCompany.modal.html',
                  'newSuperAdmin' : 'views/modals/newSuperAdmin.modal.html',
-                 'newPassword' :   'views/modals/newPassword.modal.html'
+                 'newPassword' :   'views/modals/newPassword.modal.html',
+                 'changeSuperAdmin' :   'views/modals/changeSuperAdmin.modal.html'
              }
          },
          'companyTypes' : {
@@ -77,13 +78,15 @@ function constantService(){
              'sendCode'        : 'sendCode.php',
              'checkCode'       : 'checkCode.php',
              'backup'          : 'backup.php',
-             'restore'         : 'restore.php'
+             'restore'         : 'restore.php',
+             'updateSuperAdmin': 'updateSuperAdmin.php'
          },
          'popups' : {
-             'confirmUserDelete' : { 'title': 'Eliminar Usuario', 'template': 'Desea eliminar?'},
-             'confirmCompanyDelete' : { 'title': 'Eliminar Empresa', 'template': 'Desea eliminar?'},
-             'confirmSuperAdminDelete' : { 'title': 'Eliminar Super Administrador', 'template': 'Desea eliminar?'},
-             'confirmBackup' : { 'title': 'Restaurar Sistema', 'template': 'Está seguro que desea restaurar el sistema? Los datos que no hayan sido consignados en el archivo de respaldo se perderán.'}
+             'confirmUserDelete' : { 'title': 'Eliminar Usuario', 'template': '¿Desea eliminar?'},
+             'confirmCompanyDelete' : { 'title': 'Eliminar Empresa', 'template': '¿Desea eliminar?'},
+             'confirmSuperAdminDelete' : { 'title': 'Eliminar Super Administrador', 'template': '¿Desea eliminar?'},
+             'confirmSuperAdminChange' : { 'title': 'Cambiar Super Administrador', 'template': '¿Está seguro que desea cambiar al super administrador actual?'},
+             'confirmBackup' : { 'title': 'Restaurar Sistema', 'template': '¿Está seguro que desea restaurar el sistema? Los datos que no hayan sido consignados en el archivo de respaldo se perderán.'}
          },
          'newUserOptions' : [{id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}],
          'editUserOptionsSuperAdmin' : [{id: 0, label: 'Super Administrador'}, {id: 1, label: 'Administrador'}, {id: 2,label: 'Consulta'}, {id: 3, label: 'Básico'}]

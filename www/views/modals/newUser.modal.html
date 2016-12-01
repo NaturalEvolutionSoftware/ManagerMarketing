@@ -13,15 +13,15 @@
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Nombres</span>
-                    <input type="text" ng-model="vm.newUser.data.name" required>
+                    <input type="text" placeholder="Nombres" ng-model="vm.newUser.data.name" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Apellidos</span>
-                    <input type="text" ng-model="vm.newUser.data.lastname" required>
+                    <input type="text" placeholder="Apellidos" ng-model="vm.newUser.data.lastname" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cédula</span>
-                    <input type="number" ng-model="vm.newUser.data.cc" required>
+                    <input type="number" placeholder="Cédula" ng-model="vm.newUser.data.cc" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Fecha de Nacimiento</span>
@@ -29,19 +29,23 @@
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Usuario</span>
-                    <input type="text" ng-model="vm.newUser.data.username" required>
+                    <input type="text" placeholder="Usuario" ng-model="vm.newUser.data.username" required>
                 </label>
                 <label class="item item-input item-stacked-label" ng-if="!vm.newUser.isEdit">
                     <span class="input-label">Contraseña</span>
-                    <input type="password" ng-model="vm.newUser.data.password" required>
+                    <input type="password" placeholder="Contraseña" ng-model="vm.newUser.data.password" required>
+                </label>
+                <label class="item item-input item-stacked-label" ng-if="!vm.newUser.isEdit">
+                    <span class="input-label">Confirmar Contraseña</span>
+                    <input type="password" placeholder="Confirmar Contraseña" ng-model="vm.newUser.data.confirm" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Correo Electrónico</span>
-                    <input type="text" ng-model="vm.newUser.data.mail" required>
+                    <input type="text" placeholder="Correo Electrónico" ng-model="vm.newUser.data.mail" required>
                 </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Cargo</span>
-                    <input type="text" ng-model="vm.newUser.data.role" required>
+                    <input type="text" placeholder="Cargo" ng-model="vm.newUser.data.role" required>
                 </label>
                 <label class="item item-input item-select" ng-if="!vm.newUser.isEdit || (vm.newUser.isEdit && (vm.isAdmin() || vm.isSuperAdmin()))">
                     <div class="input-label">

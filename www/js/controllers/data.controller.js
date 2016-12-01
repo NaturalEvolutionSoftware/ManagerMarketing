@@ -61,9 +61,7 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
             vm.newUserOptions = $constants.newUserOptions;
             idx = vm.user.permission - 1;
         }
-        
-        console.log(vm.user.birthdate);
-        
+
         vm.newUser.data = {
            'userId'      : vm.user.id,
            'username'    : vm.user.username,
@@ -83,21 +81,68 @@ function dataController($scope, $session, $users, $ionicLoading, $ionicModal, $c
         
         vm.newUser.submitted = true;
         
+        alert('comenzamos validaciion');
+        
         if(!valid){
             return;
         }
         
-        var data = vm.newUser.data;
-        data.permission = data.permission.id;
-        $ionicLoading.show();
-        $users.editUser(data).then(editUserSucceed, editUserFailed);
+        if($utils.checkName(vm.newUser.data.name.trim(), true) &&
+           $utils.checkName(vm.newUser.data.lastname.trim(), true) &&
+           $utils.checkEmail(vm.newUser.data.mail.trim(), true) &&
+           $utils.checkId(vm.newUser.data.cc, true) &&
+           $utils.checkDate(vm.newUser.data.birthdate, true) &&
+           $utils.checkCargo(vm.newUser.data.role.trim(), true)){
+                var data = vm.newUser.data;
+                data.permission = data.permission.id;
+                $ionicLoading.show();
+                $users.editUser(data).then(editUserSucceed, editUserFailed);
+           }else{
+               
+               if(!$utils.checkName(vm.newUser.data.name.trim(), false)){
+                   vm.newUser.data.name = '';
+                   return;
+               } 
+               
+               if(!$utils.checkName(vm.newUser.data.lastname.trim(), false)) {
+                    vm.newUser.data.lastname = '';
+                    return;
+               }
+               
+               if(!$utils.checkEmail(vm.newUser.data.mail.trim(), false)){
+                   vm.newUser.data.mail = '';
+                   return;
+               }
+               
+               if(!$utils.checkId(vm.newUser.data.cc, false)){
+                   vm.newUser.data.cc = '';
+                   return;
+               }
+               
+               if(!$utils.checkDate(vm.newUser.data.birthdate, false)){
+                   return;
+               }
+               
+               if(!$utils.checkCargo(vm.newUser.data.role.trim(), false)){
+                   vm.newUser.data.role = '';
+                   return;
+               }
+               
+           }
+        
+        
     }
     
     function editUserSucceed(response){
         $ionicLoading.hide();
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('La cédula proporcionada ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isNit')){
+            alert('La cédula proporcionada ya se encuentra registrada como NIT en el sistema.');
+            return;
+        }
+        
+        if(response.data.hasOwnProperty('isCC')){
+            alert('La cédula proporcionada ya se encuentra registrada en el sistema.');
             return;
         }
         

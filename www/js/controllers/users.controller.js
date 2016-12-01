@@ -130,13 +130,55 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
    function submitUserForm(valid){
         vm.newUser.submitted = true;
         if (!valid) {return;}
-        $ionicLoading.show();
         
-        if(vm.newUser.isEdit){
-            editUser();
-        }else{
-            createUser();
-        }
+        if($utils.checkName(vm.newUser.data.name.trim(), true) &&
+           $utils.checkName(vm.newUser.data.lastname.trim(), true) &&
+           $utils.checkEmail(vm.newUser.data.mail.trim(), true) &&
+           $utils.checkId(vm.newUser.data.cc, true) &&
+           $utils.checkDate(vm.newUser.data.birthdate, true) &&
+           $utils.checkCargo(vm.newUser.data.role.trim(), true)){
+               
+               $ionicLoading.show();
+        
+                if(vm.newUser.isEdit){
+                    editUser();
+                }else{
+                    createUser();
+                }
+               
+           }else{
+               
+               if(!$utils.checkName(vm.newUser.data.name.trim(), false)){
+                   vm.newUser.data.name = '';
+                   return;
+               } 
+               
+               if(!$utils.checkName(vm.newUser.data.lastname.trim(), false)) {
+                    vm.newUser.data.lastname = '';
+                    return;
+               }
+               
+               if(!$utils.checkEmail(vm.newUser.data.mail.trim(), false)){
+                   vm.newUser.data.mail = '';
+                   return;
+               }
+               
+               if(!$utils.checkId(vm.newUser.data.cc, false)){
+                   vm.newUser.data.cc = '';
+                   return;
+               }
+               
+               if(!$utils.checkDate(vm.newUser.data.birthdate, false)){
+                   return;
+               }
+               
+               if(!$utils.checkCargo(vm.newUser.data.role.trim(), false)){
+                   vm.newUser.data.role = '';
+                   return;
+               }
+               
+           }
+        
     }
     
     function submitPassword(valid){
@@ -156,6 +198,15 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     }
     
     function createUser(){
+        
+        if(vm.newUser.data.password !== vm.newUser.data.confirm){
+            alert('las contraseñas no coinciden');
+            vm.newUser.data.password = '';
+            vm.newUser.data.confirm = '';
+            $ionicLoading.hide();
+            return;
+        }
+        
         var data = vm.newUser.data;
         var userData = {
             'name'        : data.name,
@@ -191,10 +242,13 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
     function createUserSucceed(response){
         $ionicLoading.hide();
         
-        console.log(response);
+        if(response.data.hasOwnProperty('isNit')){
+            alert('La cédula proporcionada ya se encuentra registrada como NIT en el sistema.');
+            return;
+        }
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('La cédula proporcionada ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isCC')){
+            alert('La cédula proporcionada ya se encuentra registrada en el sistema.');
             return;
         }
         
@@ -228,8 +282,13 @@ function usersCtrlFunction($scope, $ionicPopup, $ionicLoading, $constants, $ioni
      function editUserSucceed(response){
         $ionicLoading.hide();
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('La cédula proporcionada ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isNit')){
+            alert('La cédula proporcionada ya se encuentra registrada como NIT en el sistema.');
+            return;
+        }
+        
+        if(response.data.hasOwnProperty('isCC')){
+            alert('La cédula proporcionada ya se encuentra registrada en el sistema.');
             return;
         }
         

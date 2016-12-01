@@ -12,7 +12,8 @@ function companyService($users, $constants, $http){
       'getUsers'         : getCompanyUsers,
       'getSubCompanies'  : getChildCompanies,
       'editCompany'      : modifyCompany,
-      'getSuperAdmin'    : getSuperAdmin
+      'getSuperAdmin'    : getSuperAdmin,
+      'setSuperAdmin'    : updateSuperAdmin
   };
   
   function getCompanyInfo(company){
@@ -48,6 +49,14 @@ function companyService($users, $constants, $http){
           'companyId' : companyId
       }
       return $http.post($constants.serverUrl + $constants.services.getSuperAdmin, data);
+  }
+  
+  function updateSuperAdmin(companyId, userId) {
+      var data = {
+          'userId' : userId,
+          'companyId' : companyId
+      }
+      return $http.post($constants.serverUrl + $constants.services.updateSuperAdmin, data);
   }
  
   return self;

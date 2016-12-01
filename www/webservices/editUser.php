@@ -21,11 +21,27 @@ require 'conexion.php';
 	@$mail= $request->mail;
 	@$permission= $request->permission;
 	
-$ValidationQuery = "SELECT id FROM users where cc = $cc and id <> $id";
+$ValidationQuery = "SELECT id FROM users where cc = $cc";
 $ValidationResult = mysql_query($ValidationQuery) or die(mysql_error());
+$isCC = mysql_num_rows($ValidationResult);
+$isNit = 0;
 
-if (mysql_num_rows($ValidationResult)!=0){
-	print json_encode(json_decode("{}"));
+if($isCC == 0){
+	$SecValidationQuery = "SELECT id FROM company where nit = $cc";
+	$SecValidationResult = mysql_query($SecValidationQuery) or die(mysql_error());
+	$isNit = mysql_num_rows($SecValidationResult);
+}
+
+if ($isNit == 1 || $isCC == 1){
+	
+	if($isNit == 1){
+		print json_encode(json_decode('{"isNit" : true}'));
+	}
+	else{
+		if($isCC == 1){
+			print json_encode(json_decode('{"isCC" : true}'));
+		}
+	}
 }else
 {	
 	$Query = "	UPDATE `users` SET 	

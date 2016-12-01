@@ -14,6 +14,9 @@
                 <div class="item item-button-right" ng-click="vm.toggleShowAdmin(company)">
                         {{company.name}} 
                         <div class="buttons" ng-show="vm.user.id !== user.id">
+                            <button class="button button-small button-clear button-balanced" ng-click="vm.openSuperAdminChangeModal(company)" ng-hide="vm.checkSuperAdmin(company)">
+                                <i class="icon icon ion-ios-list-outline"></i>
+                            </button>
                             <button class="button button-small button-clear button-balanced" ng-click="vm.openNewSuperAdminModal(company.id)" ng-hide="vm.checkSuperAdmin(company)">
                                 <i class="icon icon ion-person-add"></i>
                             </button>
@@ -28,6 +31,9 @@
                 <div class="item item-divider item-button-right" ng-show="vm.checkSuperAdmin(company) && company.showAdmin"> 
                     <span>Administrador: {{company.superadmin.name + ' ' + company.superadmin.lastname}}</span>
                     <div class="buttons">
+                            <button class="button button-small button-clear button-balanced" ng-click="vm.openSuperAdminChangeModal(company)">
+                                <i class="icon icon ion-ios-loop-strong"></i>
+                            </button>
                             <button class="button button-small button-clear button-balanced" ng-click="vm.openSuperAdminPasswordModal(company.superadmin)">
                                 <i class="icon icon ion-locked"></i>
                             </button>

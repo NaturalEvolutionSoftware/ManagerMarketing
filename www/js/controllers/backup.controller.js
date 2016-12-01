@@ -72,7 +72,7 @@ function backupCtrlFunction($scope, $http, $backup, $ionicPopup, $constants, $se
     }
     
     function sendBackupFileSucceed(response) {
-        console.log(response);
+        alert('el sistema se ha restaurado correctamente');
     }
     
     function sendBackupFileFailed(error) {

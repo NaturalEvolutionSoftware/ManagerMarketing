@@ -59,8 +59,6 @@ function contactController($contact, $session, $scope, $ionicLoading) {
             'date': Date.now(),
         }
         
-        console.log(messageData);
-        
         $contact.sendMessage(messageData).then(messageSubmittedSuccess, messageSubmittedFailed);
     }
     

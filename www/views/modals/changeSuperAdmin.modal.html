@@ -1,0 +1,18 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary bar-balanced">
+        <h1 ng-hide="vm.newUser.isEdit" class="title">Cambiar Super Administrador</h1>
+        <button class="button button-clear button-light" ng-click="vm.changeSuperAdmin.close()">Volver</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-divider item-text-wrap">
+                Selecciona de la lista quien será el nuevo super administrador de la empresa {{vm.changeSuperAdmin.data.company.name}}
+            </ion-item>
+            <ion-item ng-repeat="sadmin in vm.possibleSuperAdmins track by $index" class="item-text-wrap" ng-hide="sadmin.permission == 0" ng-click="vm.turnToSuperAdmin(sadmin.id)">{{sadmin.name}} {{sadmin.lastname}} ({{sadmin.role}})</ion-item>
+            <ion-item ng-show="vm.possibleSuperAdmins.length === 1">No existen usuarios potenciales</ion-item>
+        </ion-list>
+    </ion-content>
+</div>

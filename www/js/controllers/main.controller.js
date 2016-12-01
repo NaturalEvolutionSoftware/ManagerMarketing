@@ -29,7 +29,11 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     vm.newCompany = new modalForm($ionicModal, $scope, $constants.routes.modals.newCompany),
     vm.newSuperAdmin = new modalForm($ionicModal, $scope, $constants.routes.modals.newSuperAdmin),
     vm.newPass = new modalForm($ionicModal, $scope, $constants.routes.modals.newPassword);
-    vm.isSalePoint = checkCompanySalePoint;
+    vm.isSalePoint = checkCompanySalePoint,
+    vm.changeSuperAdmin = new modalForm($ionicModal, $scope, $constants.routes.modals.changeSuperAdmin),
+    vm.openSuperAdminChangeModal = changeSuperAdminInit;
+    vm.possibleSuperAdmins = [];
+    vm.turnToSuperAdmin = transformToSuperAdmin;
     
     $scope.$on('$ionicView.enter', initCompaniesCtrl);
     
@@ -69,17 +73,53 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
         return company.superadmin && Object.keys(company.superadmin).length > 0;
     }
     
+    function transformToSuperAdmin(userId){
+        
+        var confirmPopup = $ionicPopup.confirm($constants.popups.confirmSuperAdminChange);
+        confirmPopup.then(function(res) {
+            if(res) {
+                $company.setSuperAdmin(vm.curSubcompany, userId).then(setSuperAdminSucceed, setSuperAdminFailed);
+            }
+        });
+    }
+    
+    function setSuperAdminSucceed(response){
+        vm.changeSuperAdmin.close();
+        vm.possibleSuperAdmins = [];
+        updateSuperAdmins();
+    }
+    
+    function setSuperAdminFailed(error){
+        $ionicLoading.hide();
+        console.error(error);
+    }
+    
     function submitCompany(valid){
         vm.newCompany.submitted = true;
         if (!valid){return;}
         
-        $ionicLoading.show();
-        if(vm.newCompany.isEdit){
-            editCompany();
-        }else{
-            createCompany();
-        }
-        
+        if($utils.checkRazonSocial(vm.newCompany.data.name.trim(), true) &&
+           $utils.checkId(vm.newCompany.data.nit, true)){
+                $ionicLoading.show();
+                if(vm.newCompany.isEdit){
+                    editCompany();
+                }else{
+                    createCompany();
+                }
+           }else{
+               
+               if(!$utils.checkRazonSocial(vm.newCompany.data.name.trim(), false)){
+                   vm.newCompany.data.name = '';
+                   return;
+               } 
+               
+               if(!$utils.checkId(vm.newCompany.data.nit, false)) {
+                    vm.newCompany.data.nit = '';
+                    return;
+               }
+               
+           }
+
     }
     
     function createCompany(){
@@ -102,8 +142,15 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function editCompanySucceed(response){
         $ionicLoading.hide();
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('El NIT proporcionado ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isCC')){
+            alert('EL NIT propocionado se encuentra registrado como cédula en el sistema');
+            vm.newCompany.data.nit = '';
+            return;
+        }
+        
+         if(response.data.hasOwnProperty('isNit')){
+            alert('EL NIT propocionado ya se encuentra registrado en el sistema');
+            vm.newCompany.data.nit = '';
             return;
         }
         
@@ -122,16 +169,61 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function submitSuperAdmin(valid){
         vm.newSuperAdmin.submitted = true;
         if (!valid){return;}
-
-        $ionicLoading.show();
-        if(vm.newSuperAdmin.isEdit){
-            editSuperAdmin();
-        }else{
-            createSuperAdmin();
+        
+        if(vm.newSuperAdmin.data.password !== vm.newSuperAdmin.data.confirm){
+            alert('las contraseñas no coinciden');
+            vm.newSuperAdmin.data.password = '';
+            vm.newSuperAdmin.data.confirm = '';
+            return;
         }
+        
+           if($utils.checkName(vm.newSuperAdmin.data.name.trim(), true) &&
+           $utils.checkName(vm.newSuperAdmin.data.lastname.trim(), true) &&
+           $utils.checkEmail(vm.newSuperAdmin.data.mail.trim(), true) &&
+           $utils.checkId(vm.newSuperAdmin.data.cc, true) &&
+           $utils.checkDate(vm.newSuperAdmin.data.birthdate, true) &&
+           $utils.checkCargo(vm.newSuperAdmin.data.role.trim(), true)){
+                $ionicLoading.show();
+                if(vm.newSuperAdmin.isEdit){
+                    editSuperAdmin();
+                }else{
+                    createSuperAdmin();
+                }
+           }else{
+               
+               if(!$utils.checkName(vm.newSuperAdmin.data.name.trim(), false)){
+                   vm.newSuperAdmin.data.name = '';
+                   return;
+               } 
+               
+               if(!$utils.checkName(vm.newSuperAdmin.data.lastname.trim(), false)) {
+                    vm.newSuperAdmin.data.lastname = '';
+                    return;
+               }
+               
+               if(!$utils.checkEmail(vm.newSuperAdmin.data.mail.trim(), false)){
+                   vm.newSuperAdmin.data.mail = '';
+                   return;
+               }
+               
+               if(!$utils.checkId(vm.newSuperAdmin.data.cc, false)){
+                   vm.newSuperAdmin.data.cc = '';
+                   return;
+               }
+               
+               if(!$utils.checkDate(vm.newSuperAdmin.data.birthdate, false)){
+                   return;
+               }
+               
+               if(!$utils.checkCargo(vm.newSuperAdmin.data.role.trim(), false)){
+                   vm.newSuperAdmin.data.role = '';
+                   return;
+               }
+               
+           }
     }
     
-    function createSuperAdmin(){
+    function createSuperAdmin(valid){
         var data = vm.newSuperAdmin.data;
         
         var userData = {
@@ -159,8 +251,13 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function editSuperAdminSucceed(response){
         $ionicLoading.hide();
         
-         if(!response.data.hasOwnProperty('status')){
-            alert('La cédula proporcionada ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isNit')){
+            alert('La cédula proporcionada ya se encuentra registrada como NIT en el sistema.');
+            return;
+        }
+        
+        if(response.data.hasOwnProperty('isCC')){
+            alert('La cédula proporcionada ya se encuentra registrada en el sistema.');
             return;
         }
         
@@ -223,8 +320,15 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function createCompanySucceed(response){
         $ionicLoading.hide();
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('EL NIT propocionado ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isCC')){
+            alert('EL NIT propocionado se encuentra registrado como cédula en el sistema');
+            vm.newCompany.data.nit = '';
+            return;
+        }
+        
+        if(response.data.hasOwnProperty('isNit')){
+            vm.newCompany.data.nit = '';
+            alert('EL NIT propocionado ya se encuentra registrado para otra empresa en el sistema');
             return;
         }
         
@@ -245,8 +349,13 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function createSuperAdminSucceed(response) {
         $ionicLoading.hide();
         
-        if(!response.data.hasOwnProperty('status')){
-            alert('La cédula proporcionada ya existe en el sistema.');
+        if(response.data.hasOwnProperty('isNit')){
+            alert('La cédula proporcionada ya se encuentra registrada como NIT en el sistema.');
+            return;
+        }
+        
+        if(response.data.hasOwnProperty('isCC')){
+            alert('La cédula proporcionada ya se encuentra registrada en el sistema.');
             return;
         }
         
@@ -281,6 +390,26 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
         vm.curSubcompany = subcompanyId;
         vm.newSuperAdmin.data = {};
         vm.newSuperAdmin.open();
+    }
+    
+    function changeSuperAdminInit(subcompany){
+        vm.curSubcompany = subcompany.id;
+        vm.changeSuperAdmin.data.company = subcompany;
+        console.log(subcompany);
+        $ionicLoading.show();
+        $company.getUsers(subcompany.id).then(getCompanyUsersSucceed, getCompanyUsersFailed);
+    }
+    
+    function getCompanyUsersSucceed(response){
+        $ionicLoading.hide();
+        vm.possibleSuperAdmins = response.data;
+        console.log(response);
+        vm.changeSuperAdmin.open();
+    }
+    
+    function getCompanyUsersFailed(error) {
+        $ionicLoading.hide();
+        console.error(error);
     }
     
     function newCompanyInit(){
@@ -325,7 +454,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     function editCompanyInit(company){
         vm.newCompany.data = {
            'companyId'  : company.id,
-           'nit'        : company.nit,
+           'nit'        : parseInt(company.nit),
            'name'       : company.name
         };
         vm.newCompany.isEdit = true; 

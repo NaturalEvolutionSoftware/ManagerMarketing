@@ -37,6 +37,7 @@ function companyService($users, $constants, $http){
   
   function delCompany(companyId){
       var data = {'companyId' : companyId};
+      console.log(data);
       return $http.post($constants.serverUrl + $constants.services.deleteCompany, data);
   }
   

@@ -376,6 +376,7 @@ function mainController($messages, $session, $location, $company, $scope, $ionic
     
     function deleteCompanySucceed(response) {
         $ionicLoading.hide();
+        console.log(response);
         updateSubCompanies();
         //alert('Empresa eliminada exitosamente');
     }
